@@ -1,6 +1,6 @@
 %function BinoAsian(S0,E,T,r,sigma,N)
 %% Test
-clear; tic; S0=50;  E=40; T=1; r=0.1; sigma=0.3; N=50;
+clear; tic; S0=50;  E=40; T=1.0; r=0.1; sigma=0.3; N=50;
 %% Function to evaluate European Call option by Binomial Method
 %   Parameters:
 %   S0 = initial share price
@@ -32,58 +32,57 @@ for i = 0:N
         S(i+1,j+1) = S0*u^(j)*d^(i-j);
     end
 end
-%% Calculating All Representitive Averages
+%% Calculating All S_max and Representitive Averages
 for i = 0:N
     for j = 0:i %j indexes at j+1 due to matlab not allowing C_k{:,0)
         A_k{i+1,j+1} = zeros(j*(i-j)+1,1); % Create Vector to hold rep avgs
-        S_k{i+1,j+1} = zeros(j*(i-j),1); % Create Vector to hold S_max
-        A_k{i+1,j+1}(1) = A_max(i,j); %Assign A_max to first element in vector
+        S_k{i+1,j+1} = NaN(j*(i-j),1);     % Create Vector to hold S_max
+        A_k{i+1,j+1}(1) = A_max(i,j);       %Assign A_max to first element in vector
         %Paths with only up (i = j) or down movements (j = 0) or i = 1 will only have one representative average
-        if i < 1 || i == j || j == 0
+        if i < 1 || i == j || j == 0 || j*(i-j) == 1
             S_k{i+1,j+1}(1) = S0*(u^j)*d^(i-j);
             continue
         end
-        S_k{i+1,j+1}(1) = S0*(u^j); %S_max for A_max
-        %Creates initial path with j up steps followed by i-j downsteps
-        %begins at node 1, +x: x steps above s0, -x: x steps below s0 
-        Tau = [1:j, j-1:-1:j-(i-j)+1];
-        %Creates a "minimum" path with i-j downsteps followed by j upsteps
-        Tau_min = [-1:-1:-(i-j),-(i-j):-(i-j)+(j-1)];
-        %Removes duplicate from min path generation method
-        Tau_min(numel(-1:-1:-(i-j))+1) = [];
+        %% Filling S_max Vector
+        %Setting Paramaters
+        n = j*(i-j);              %Size of vector
+        rep = min([j;i-j]);       %Maximum element repetition in vector
+        %Calculating unique elements in vector
+        unique = 2*numel(1:rep-1) + (n - (2*sum(1:rep-1)))/rep;
+        %First and last values
+        S_k{i+1,j+1}(1)   = S0 * (u ^ j);
+        S_k{i+1,j+1}(end) = S0 * (u ^ (j - unique + 1));
+        %%The following if statement changes the final output
+        if n == 2
+            continue
+        end
+        %%Ascending/Descending repeated values
+        k     = 2; %iterator
+        count = 2; %Number of elements filled
+        while k < rep
+            S_k{i+1,j+1}(sum(1:k-1)+1:sum(1:k-1)+k) = repmat(S0*(u^(j-k+1)), k, 1);
+            S_k{i+1,j+1}(n-sum(1:k-1)+1-k:n-sum(1:k-1)) = repmat(S0*(u^(j-unique+k)), k, 1);
+            count = count + 2*k;
+            k = k + 1;
+        end
+        %%"Middle" repeated values
+        c = sum(2:k-1);
+        for l = 0 : (n-count)/rep - 1
+            S_k{i+1,j+1}(count/2+1+l*rep:end) = [repmat(S0*u^(j-k+1), rep, 1);
+                                     S_k{i+1,j+1}(count/2+1+l*rep+rep:end)];
+            k = k + 1;
+        end
+        %% Calculating Representitive Averages Using S_max
         A_k{i+1,j+1}(j*(i-j) + 1) = A_min(i,j); %Assign A_min to last element in vector
         for k = 2:j*(i-j)
             A_k{i+1,j+1}(k) = A_k{i+1,j+1}(k-1) - (1/(i+1))* ...
                 (S_k{i+1,j+1}(k-1) - S_k{i+1,j+1}(k-1)*(d^2));
-            %filter where current path not equal to minimum path
-            Tau_filtered = Tau ~= Tau_min;
-            %Find first index which is not minimum
-            [~, Tau_match] = find(Tau_filtered,1);
-            %Index highest point on path that isn't on minimum path
-            [~, Index] = max(Tau(Tau_filtered));
-            %minus two from highest point not on minimum path
-            Tau(Tau_match-1+Index) = Tau(Tau_match-1+Index) - 2;
-            %Find new highest point not on min path by repeating above steps
-            %1: Filter from not being on minimum path
-            Tau_filtered = Tau ~= Tau_min;
-            %2: Find first index not on minimum path
-            [~, Tau_match] = find(Tau_filtered,1);
-            %3: Find maximum not on minimum path
-            [~, Index] = max(Tau(Tau_filtered));
-            %Use new highest point to calculate the next S_max value
-            S_k{i+1,j+1}(k) = S0 * u^(Tau(Tau_match-1+Index)); %Next S_max is the new Max
         end
     end
 end
 %% Pricing Option Value at Final Time (N)
-% for j = 0:N
-%     C_k{N+1,j+1} = zeros(j*(N-j)+1,1);
-%     for k = 1:j*(N-j)+1
-%        C_k{N+1,j+1}(k) = F(S(N+1,j+1),A_k{N+1,j+1}(k)); 
-%     end
-% end
 for j = 0:N
-    C_k{N+1,j+1} = F(S(N+1,j+1),A_k{N+1,j+1}); 
+    C_k{N+1,j+1} = F(S(N+1,j+1),A_k{N+1,j+1});
 end
 %% Pricing Option
 err = 1e-3;
@@ -93,27 +92,24 @@ for i = N-1:-1:0
         for k = 1:j*(i-j)+1
             %Find K_u
             Ku  = ( (i+1)*A_k{i+1,j+1}(k) + u*S(i+1,j+1) )/(i+2);
-            %loc = find(abs(A_k{i+2,j+2} - Ku) < 1e-12,1);
             [loc, ubound, lbound] = findInSorted(Ku,A_k{i+2,j+2},err);
+            %If found set accordingly
             if loc > 0
-                %disp('It was found')
                 Cu = C_k{i+2,j+2}(loc);
             else
-                %Cu = interp1(A_k{i+2,j+2},C_k{i+2,j+2},Ku,'linear');
-                % Could put this interpolation step inside of findInSorted
+                %If not found, interpolate between closest values
                 Cu = C_k{i+2,j+2}(lbound)+(Ku-A_k{i+2,j+2}(lbound))*(...
                     (C_k{i+2,j+2}(ubound)-C_k{i+2,j+2}(lbound))/...
                     (A_k{i+2,j+2}(ubound)-A_k{i+2,j+2}(lbound)));
             end
             %Find K_d
             Kd = ( (i+1)*A_k{i+1,j+1}(k) + d*S(i+1,j+1) )/(i+2);
-            %loc = find(abs(A_k{i+2,j+1} - Kd) < 1e-12,1);
             [loc, ubound, lbound] = findInSorted(Kd,A_k{i+2,j+1},err);
+            %If found set accordingly
             if loc > 0
                 Cd = C_k{i+2,j+1}(loc);
             else
-                %Cd = interp1(A_k{i+2,j+1},C_k{i+2,j+1},Kd,'linear');
-                % Could put this interpolation step inside of findInSorted
+                %If not, interpolate between closest values
                 Cd = C_k{i+2,j+1}(lbound)+(Kd-A_k{i+2,j+1}(lbound))*(...
                     (C_k{i+2,j+1}(ubound)-C_k{i+2,j+1}(lbound))/...
                     (A_k{i+2,j+1}(ubound)-A_k{i+2,j+1}(lbound)));
