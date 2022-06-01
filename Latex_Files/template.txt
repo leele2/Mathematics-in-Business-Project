@@ -1,0 +1,28 @@
+R
+\begin{lstlisting}[caption={read\_data.R},style=R]
+\end{lstlisting}\label{}
+CONSOLE
+\begin{lstlisting}[caption={Useful Output from read\_data.R}]
+\end{lstlisting}
+PLOT
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\textwidth]{}
+    \caption{}
+    \label{}
+\end{figure}
+SubPlots
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.33\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{}
+        \subcaption{}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.33\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{}
+        \subcaption{}
+    \end{subfigure}
+\caption{}
+\end{figure}

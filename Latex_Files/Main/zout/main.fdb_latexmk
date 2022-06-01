@@ -1,18 +1,18 @@
 # Fdb version 3
-["bibtex zout/main"] 1654108943 "zout/main.aux" "zout/main.bbl" "zout/main" 1654108947
+["bibtex zout/main"] 1654108943 "zout/main.aux" "zout/main.bbl" "zout/main" 1654109132
   "c:/texlive/2022/texmf-dist/bibtex/bst/base/alpha.bst" 1651615864 23907 a5f93555796fb564b924339521f10a7c ""
   "mybibliography.bib" 0 -1 0 ""
-  "zout/main.aux" 1654108946 1138 4d61053bae09ecbf7ee6df2340285378 "pdflatex"
+  "zout/main.aux" 1654109131 1138 4d61053bae09ecbf7ee6df2340285378 "pdflatex"
   (generated)
   "zout/main.bbl"
   "zout/main.blg"
-["pdflatex"] 1654108944 "c:/Users/dj-lu/OneDrive - University of Exeter/University of Exeter/05 - Fifth Year/Mathematics in Business Project/Latex_Files/Main/main.tex" "zout/main.pdf" "main" 1654108947
+["pdflatex"] 1654109128 "c:/Users/dj-lu/OneDrive - University of Exeter/University of Exeter/05 - Fifth Year/Mathematics in Business Project/Latex_Files/Main/main.tex" "zout/main.pdf" "main" 1654109132
   "Appendix/appendix.tex" 1654108618 232 c62d26897cccb4b4e8b11786838bf707 ""
   "Chapters/C1/C1.tex" 1654108716 112 b4f1f09aa87f8c7ef313371453438b10 ""
   "PreAmble/PreAmble.tex" 1654108094 2992 51e5753c61522ba402459811a110d7bc ""
   "PreAmble/R_format.tex" 1652788954 286 b8fa4c0f5bdf6c6da2fba8977082936c ""
-  "Title/Title.tex" 1654107569 935 79af795c802fe91b0cc1f51d66b96fb3 ""
-  "Title/logo.eps" 1654106680 790062 1a8c77d002b59a027a13d867f3c96b5c ""
+  "Title/Title.tex" 1654109127 999 46e0189ecbe6ae7f659092ca93501012 ""
+  "Title/logo.png" 1654106887 68227 aa0fac9bafd71e3f1fdaf9cf34db2ff0 ""
   "c:/Users/dj-lu/OneDrive - University of Exeter/University of Exeter/05 - Fifth Year/Mathematics in Business Project/Latex_Files/Main/main.tex" 1654108935 1336 f657f3c4bc6db7934e63d769fc401323 ""
   "c:/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1651616703 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2022/texmf-dist/fonts/tfm/jknappen/ec/tcrm0500.tfm" 1651616439 1536 b3387106d9afecbfe14bde2de6eadf47 ""
@@ -155,11 +155,11 @@
   "c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1651619718 4448422 1500026d8769a728f5ac0b9ab1c4bf6e ""
   "c:/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1651619875 2827841 64974fbd964a41f54612e9fd79100cf1 ""
   "c:/texlive/2022/texmf.cnf" 1651619694 713 baa45e065482d44c4cd81b98ef72c63b ""
-  "zout/main.aux" 1654108946 1138 4d61053bae09ecbf7ee6df2340285378 "pdflatex"
+  "zout/main.aux" 1654109131 1138 4d61053bae09ecbf7ee6df2340285378 "pdflatex"
   "zout/main.bbl" 1654108944 49 0eba253fc001332e731e8aba3f23127b "bibtex zout/main"
-  "zout/main.lof" 1654108946 40 b4a64fdfb29ace579b6af2a2fa1bd5bf "pdflatex"
-  "zout/main.out" 1654108946 337 913041e3b8cdde226630f13e2828cb30 "pdflatex"
-  "zout/main.toc" 1654108946 171 9473b2e05d2b3f9e6e3aa5601697d576 "pdflatex"
+  "zout/main.lof" 1654109131 40 b4a64fdfb29ace579b6af2a2fa1bd5bf "pdflatex"
+  "zout/main.out" 1654109131 337 913041e3b8cdde226630f13e2828cb30 "pdflatex"
+  "zout/main.toc" 1654109131 171 9473b2e05d2b3f9e6e3aa5601697d576 "pdflatex"
   (generated)
   "zout/main.aux"
   "zout/main.lof"

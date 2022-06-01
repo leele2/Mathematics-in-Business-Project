@@ -1,0 +1,51 @@
+% !TeX root = main.tex
+\documentclass[english]{report}
+\usepackage[usenames,dvipsnames]{color} 
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage[shortlabels]{enumitem}
+\usepackage{subcaption}
+\usepackage{titlesec}
+\usepackage{xr}
+\usepackage{graphicx}
+\usepackage[demo]{rotating}
+\usepackage{wrapfig}
+\usepackage{ragged2e}
+\usepackage{multicol}
+\usepackage{textcomp, gensymb}
+\usepackage[useregional]{datetime2}[showzone=false]
+\RequirePackage{xkeyval}
+\RequirePackage{etoolbox}
+\usepackage{csvsimple, booktabs, siunitx}
+\usepackage[titletoc]{appendix}
+
+% Custom configurations and commands
+\input{PreAmble/PreAmble.tex}
+\begin{document}
+\pagenumbering{roman} %Start roman numbering
+\input{Title/Title.tex}
+\begingroup %Disable page break between TOC and LOFAT
+    \let\clearpage\relax          
+    \listoffigures
+    \renewcommand{\baselinestretch}{1.0} %Set spacing for TOC
+    \tableofcontents
+    \listoffigures
+\endgroup
+\input{Chapters/C1/C1.tex}
+
+% \begingroup
+% \RaggedRight
+\bibliographystyle{alpha}
+\bibliography{mybibliography.bib}
+% \endgroup
+\pagebreak
+\input{Appendix/appendix}
+
+\end{document}

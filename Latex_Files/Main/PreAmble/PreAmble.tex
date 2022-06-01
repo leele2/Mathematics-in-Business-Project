@@ -1,0 +1,61 @@
+% !TeX root = ..\main.tex
+% Custom Commands
+\newcommand\dif{\mathop{}\!\mathrm{d}} %dx for integrals \dif{x}
+\newcommand\var[1]{\text{Var}\left[\,#1\,\right]} %Var[]
+\newcommand\cov[2]{\text{Cov}\left[\,#1,#2\,\right]} %Cov[x1,x2]
+\newcommand\E[1]{\text{E}\left[\,#1\,\right]} %E[]
+\newcommand\IQR{\text{I}\text{Q}\text{R}}
+\newcommand\nline{\par\smallskip}
+\newcommand\sOneSize{0.4625}
+\newcommand\sTwoRes{0.70}
+%% Defaults for LstListing Environment
+\lstset{
+  caption=\lstname,
+  basicstyle=\scriptsize\ttfamily, % the size of the fonts that are used for the code
+  numbers=left,                   % where to put the line-numbers
+  numberstyle=\tiny\color{black},  % the style that is used for the line-numbers
+  stepnumber=1,                   % the step between two line-numbers. If it is 1, each line
+                                  % will be numbered
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  frame=single,                   % adds a frame around the code
+  rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  captionpos=t,                   % sets the caption-position to top
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+  }
+%% Defining Style for R Code within LstListing Environment
+\input{PreAmble/R_format}
+%% Hyperlink customization
+\hypersetup{
+  %hidelinks    = false, %Remove color box
+  frenchlinks  = false, %Small caps for hyperlinks
+  colorlinks   = true, %Colours links instead of boxes
+  urlcolor     = blue, %Colour for external hyperlinks
+  linkcolor    = black, %Colour of internal links
+  citecolor   = black   %Colour of citations
+}
+%% Extra spacing on matrices
+\makeatletter
+\renewcommand*\env@matrix[1][\arraystretch]{%
+  \edef\arraystretch{#1}%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{*\c@MaxMatrixCols c}}
+\makeatother
+%%Capitalising \autoref
+\renewcommand*{\chapterautorefname}{Chapter}
+\renewcommand*{\subsectionautorefname}{Subsection}
+\renewcommand*{\sectionautorefname}{Section}
+%%Merging list of tables and figures
+\def\table{\def\figurename{Table}\figure}
+\let\endtable\endfigure 
+\renewcommand\listfigurename{List of Figures and Tables}
+%%Formating Chapter spacing and linebreak
+\titleformat{\chapter}[hang] 
+{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter:}{1em}{}
+\titlespacing*{\chapter}{0pt}{0pt}{5pt}
