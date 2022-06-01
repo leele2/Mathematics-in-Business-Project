@@ -1,8 +1,13 @@
+N = 50;
+test = cell(N+1);
 tic;
 for i = 0:50
     for j = 0:i
         if i < 1 || i == j || j == 0 || j*(i-j) == 1
-            out = S0*(u^j)*d^(i-j);
+            test{i+1,j+1} = S0*(u^j)*d^(i-j);
+            if sum(test{i+1,j+1} - S_k{i+1,j+1}) ~= 0
+                disp("broke")
+            end
         else
             %% Setting Paramaters
             n = j * (i - j);         %Size of vector
@@ -15,9 +20,9 @@ for i = 0:50
             %First and last values
             out(1)   = S0 * (u ^ j);
             out(end) = S0 * (u ^ (j - unique + 1));
-            if n == 2
-                continue
-            end
+%             if n == 2
+%                 continue
+%             end
             %Ascending/Descending repeated values
             k = 2;
             while k < r
@@ -32,7 +37,8 @@ for i = 0:50
                                           out(count/2+1+l*r+r:end)];
                 k = k + 1;
             end
-            if sum(out - S_k{i+1,j+1}) ~= 0
+            test{i+1,j+1} = out;
+            if sum(test{i+1,j+1} - S_k{i+1,j+1}) ~= 0
                 disp("broke")
             end
         end

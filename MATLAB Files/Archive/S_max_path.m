@@ -1,8 +1,16 @@
+N = 50;
+test = cell(N+1);
 tic;
-for i = 0:50
+for i = 0:N
     for j = 0:i
+            if i == 2 && j == 1
+                disp("pause");
+            end
         if i < 1 || i == j || j == 0
-            out = S0*(u^j)*d^(i-j);
+            test{i+1,j+1} = S0*(u^j)*d^(i-j);
+            if sum(test{i+1,j+1} - S_k{i+1,j+1}) ~= 0
+                disp("broke")
+            end
         else
             out = NaN(j*(i-j),1);
             out(1) = S0*(u^j); %S_max for A_max
@@ -32,6 +40,7 @@ for i = 0:50
                 %Use new highest point to calculate the next S_max value
                 out(k) = S0 * u^(Tau(Tau_match-1+Index)); %Next S_max is the new Max
             end
+            test{i+1,j+1} = out;
         end
     end
 end
