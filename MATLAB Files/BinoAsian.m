@@ -54,24 +54,22 @@ for i = 0:N
         S_k{i+1,j+1}(1)   = S0 * (u ^ j);
         S_k{i+1,j+1}(end) = S0 * (u ^ (j - unique + 1));
         %%The following if statement changes the final output%%
-        if n == 2
-            continue
-        end
-        % Ascending/Descending repeated values
-        k     = 2; %iterator
-        count = 2; %Number of elements filled
-        while k < rep
-            S_k{i+1,j+1}(sum(1:k-1)+1:sum(1:k-1)+k) = repmat(S0*(u^(j-k+1)), k, 1);
-            S_k{i+1,j+1}(n-sum(1:k-1)+1-k:n-sum(1:k-1)) = repmat(S0*(u^(j-unique+k)), k, 1);
-            count = count + 2*k;
-            k = k + 1;
-        end
-        % "Middle" repeated values
-        c = sum(2:k-1);
-        for l = 0 : (n-count)/rep - 1
-            S_k{i+1,j+1}(count/2+1+l*rep:end) = [repmat(S0*u^(j-k+1), rep, 1);
-                                     S_k{i+1,j+1}(count/2+1+l*rep+rep:end)];
-            k = k + 1;
+        if n ~= 2
+            % Ascending/Descending repeated values
+            k     = 2; %iterator
+            count = 2; %Number of elements filled
+            while k < rep
+                S_k{i+1,j+1}(sum(1:k-1)+1:sum(1:k-1)+k) = repmat(S0*(u^(j-k+1)), k, 1);
+                S_k{i+1,j+1}(n-sum(1:k-1)+1-k:n-sum(1:k-1)) = repmat(S0*(u^(j-unique+k)), k, 1);
+                count = count + 2*k;
+                k = k + 1;
+            end
+            % "Middle" repeated values
+            for l = 0 : (n-count)/rep - 1
+                S_k{i+1,j+1}(count/2+1+l*rep:end) = [repmat(S0*u^(j-k+1), rep, 1);
+                    S_k{i+1,j+1}(count/2+1+l*rep+rep:end)];
+                k = k + 1;
+            end
         end
         %% Calculating Representitive Averages Using S_max
         A_k{i+1,j+1}(j*(i-j) + 1) = A_min(i,j); %Assign A_min to last element in vector
