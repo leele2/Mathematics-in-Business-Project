@@ -1,2 +1,0 @@
-\contentsline {chapter}{\numberline {1}Here is the first chapter}{1}{chapter.1}%
-\contentsline {chapter}{Appendix \numberline {A}\textsc {Matlab} Files}{3}{appendix.1.A}%
