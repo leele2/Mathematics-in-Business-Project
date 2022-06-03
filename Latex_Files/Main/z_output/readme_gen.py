@@ -8,7 +8,7 @@ readme_dir = "C:\\Users\\dj-lu\OneDrive - University of Exeter\\University of Ex
  
  
 # Store Pdf with convert_from_path function
-images = convert_from_path(pdf_file)
+images = convert_from_path(pdf_file, 400)
 txt_out = []
 txt_out.append("# Mathematics-in-Business-Project\n")
  
