@@ -4,7 +4,7 @@ import sys
 
 pdf_file = sys.argv[1]
 output_dir = sys.argv[2]
-readme_dir = sys.argv[3]
+readme_dir = "C:\\Users\\dj-lu\OneDrive - University of Exeter\\University of Exeter\\05 - Fifth Year\\Mathematics in Business Project\\"
  
  
 # Store Pdf with convert_from_path function
@@ -16,5 +16,7 @@ for i in range(len(images)):
     #Save pages as images in the pdf
     images[i].save(output_dir + 'page'+ str(i) +'.jpg', 'JPEG')
     #String for README.md
-    txt_out.append("![img](Latex_Files/Main/z_output/Images/page" + i + ".jpg)")
+    txt_out.append("![page" + str(i) + "](Latex_Files/Main/z_output/Images/page" + str(i) + ".jpg)")
 
+with open(readme_dir + "README.md", "w") as output:
+    output.write("\n".join(txt_out))
