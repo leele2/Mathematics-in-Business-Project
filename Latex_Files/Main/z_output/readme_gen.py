@@ -17,6 +17,7 @@ for i in range(len(images)):
     images[i].save(output_dir + 'page'+ str(i) +'.jpg', 'JPEG')
     #String for README.md
     txt_out.append("![page" + str(i) + "](Latex_Files/Main/z_output/Images/page" + str(i) + ".jpg)")
+    txt_out.append("***")
 
 with open(readme_dir + "README.md", "w") as output:
     output.write("\n".join(txt_out))
