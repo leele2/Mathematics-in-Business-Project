@@ -14,7 +14,7 @@ readme_dir = "\\".join(cwd.split("\\")[:-3]) # -3 represents up 4 directories
 # Store Pdf with convert_from_path function
 images = convert_from_path(pdf_file)
 txt_out = []
-txt_out.append("#" + cwd.split("\\")[-4] + "\n")
+txt_out.append("# " + cwd.split("\\")[-4] + "\n")
 # txt_out.append("Statistical Modelling in Space and Time CW2\n")
 
 # Create folder to store images if not already created

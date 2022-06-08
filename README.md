@@ -1,4 +1,4 @@
-#Mathematics in Business Project
+# Mathematics in Business Project
 
 ![page0](Latex_Files/Main/z_output/Images/page0.png)
 ***
