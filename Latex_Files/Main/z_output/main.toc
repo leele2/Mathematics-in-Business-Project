@@ -1,0 +1,6 @@
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Standard options}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Asian options}{1}{section.1.2}%
+\contentsline {section}{\numberline {1.3}A brief history of options}{1}{section.1.3}%
+\contentsline {chapter}{Appendix \numberline {A}\textsc {Matlab} Files}{3}{appendix.1.A}%
+\contentsline {chapter}{Appendix \numberline {B}Python Files}{5}{appendix.1.B}%

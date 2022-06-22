@@ -1,0 +1,6 @@
+{"rule":"DOUBLE_PUNCTUATION","sentence":"^\\Q[style=Matlab-editor]../../MATLAB Files/BinoAsian.m\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\Q[style=Matlab-editor]../../MATLAB Files/BinoAsian.m\\E$"}
+{"rule":"DOUBLE_PUNCTUATION","sentence":"^\\Q[style=Matlab-editor]../../MATLAB Files/Functions/findInSorted.m\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\Q[style=Matlab-editor]../../MATLAB Files/Functions/findInSorted.m\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\Q[language=PyBrIM, style=colorEX]../../Python Files/OptionVolume.py\\E$"}
+{"rule":"DOUBLE_PUNCTUATION","sentence":"^\\Q[language=PyBrIM, style=colorEX]../../Python Files/OptionVolume.py\\E$"}

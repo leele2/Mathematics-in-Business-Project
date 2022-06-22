@@ -8,6 +8,7 @@
 \newcommand\nline{\par\smallskip}
 \newcommand\sOneSize{0.4625}
 \newcommand\sTwoRes{0.70}
+\newcommand\PgSz{\scriptsize}
 %% Defaults for LstListing Environment
 \lstset{
   caption=\lstname,
@@ -28,8 +29,8 @@
   breaklines=true,                % sets automatic line breaking
   breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
   }
-%% Defining Style for R Code within LstListing Environment
-\input{PreAmble/R_format}
+%% Defining Style for R Code and Python within LstListing Environment
+\input{PreAmble/ProgrammingLangFormat}
 %% Hyperlink customization
 \hypersetup{
   %hidelinks    = false, %Remove color box
