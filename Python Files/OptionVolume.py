@@ -21,6 +21,10 @@ def string_to_int(string):
     return int(string.replace(',', ''))
 
 # Ensuring html file is on path
+"""
+html file taken from:
+https://www.theocc.com/Market-Data/Market-Data-Reports/Volume-and-Open-Interest/Historical-Volume-Statistics
+"""
 html_file = [f for f in listdir('.') if f.endswith('.html')]
 if len(html_file) != 1:
     raise ValueError('should be exactly one html file in the current directory')
