@@ -1,6 +1,6 @@
 %function BinoAsian(S0,E,T,r,sigma,N,F)
 %% Test
-clear; tic; S0=50;  E=40; T=1.0; r=0.1; sigma=0.3; N=50; F=@(S,A)max(A-E,0);
+clear; tic; S0=50;  E=40; T=1.0; r=0.1; sigma=0.3; N=500; F=@(S,A)max(A-E,0);
 %% Function to evaluate European Call option by Binomial Method
 %   Parameters:
 %   S0 = initial share price
