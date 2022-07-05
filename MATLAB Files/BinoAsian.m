@@ -1,6 +1,6 @@
 %function BinoAsian(S0,E,T,r,sigma,N,F)
 %% Test
-clear; tic; S0=50;  E=40; T=1.0; r=0.1; sigma=0.3; N=500; F=@(S,A)max(A-E,0);
+clear; tic; S0=50;  E=50; T=1.0; r=0.1; sigma=0.3; N=50; F=@(S,A)max(A-E,0);
 %% Function to evaluate European Call option by Binomial Method
 %   Parameters:
 %   S0 = initial share price
@@ -40,7 +40,7 @@ for i = 0:N
         S_k{i+1,j+1} = NaN(j*(i-j),1);     %Create Vector to hold S_max
         A_k{i+1,j+1}(1) = A_max(i,j);      %Assign A_max to first element in vector
         % Paths with only up (i = j) or down movements (j = 0) or i = 1 will only have one representative average
-        if i < 1 || i == j || j == 0 || j*(i-j) == 1
+        if i < 1 || i == j || j == 0
             S_k{i+1,j+1}(1) = S0*(u^j)*d^(i-j);
             continue
         end
@@ -59,7 +59,9 @@ for i = 0:N
             k     = 2; %iterator
             count = 2; %Number of elements filled
             while k < rep
+                % Filling from top
                 S_k{i+1,j+1}(sum(1:k-1)+1:sum(1:k-1)+k) = repmat(S0*(u^(j-k+1)), k, 1);
+                % Filling from bottom
                 S_k{i+1,j+1}(n-sum(1:k-1)+1-k:n-sum(1:k-1)) = repmat(S0*(u^(j-unique+k)), k, 1);
                 count = count + 2*k;
                 k = k + 1;
