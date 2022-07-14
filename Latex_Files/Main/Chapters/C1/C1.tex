@@ -2,24 +2,44 @@
 \chapter{Introduction}
 \pagenumbering{arabic} %Start roman numbering
 
-This report studies a vital financial derivative in today's markets, namely options. The option market is widely considered a venue for informed trading \cite{li2021effect,hu2014,chak2004}, that is investors trading with superior knowledge of the probability distribution of share prices, through either access to private information or skillful processing of public information \cite{grossman1975application}. 
+This report studies a vital financial derivative in today's markets, namely options. The importance of the option market has been shown by empirical studies which suggest that option trading improves information efficiency in the broader stock market \cite{PanInfoEffic,li2021effect}, and also that firms with listed options experience lower implied cost of equity capital \cite{naikerLowEquity}; indicating that options trading reduces the cost of capital \cite{li2021effect}. The popularity of the options market can easily be seen by the exponential growth in their trading volume since standardized, exchange-traded stock options were first listed in The Chicago Board Options Exchange in 1973 \cite{markham2002financial}; shown in \autoref{C1fig:OptionVolume}. In 2020 single stock option trading volume became higher than the underlying stock volume for the first time ever \cite{yahooOptions}. 
 \nline
-The importance of the option market has been shown by empirical studies which speculate that option trading improves information efficiency in the broader stock market \cite{PanInfoEffic,li2021effect}. It has also been shown that firms with listed options experience lower implied cost of equity capital \cite{naikerLowEquity}, indicating that options trading reduces the cost of capital \cite{li2021effect}. The popularity of the options market can easily be seen by the exponential growth in their trading volume from when standardized, exchange-traded stock options were first listed in The Chicago Board Options Exchange in 1973 \cite{markham2002financial}, shown in \autoref{C1fig:OptionVolume}. In 2020 option trading volume became higher than the underlying stock volume for the first time ever \cite{yahooOptions}.
+It is this explosive popularity and significance which have motivated this report. We will begin by describing standard options and exploring popular methods that are used to price them. Then delving into Asian options and taking a deeper look into the surrounding literature before implementing several pricing methods and comparing them.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.65\textwidth]{Chapters/C1/plots/OptionVolume.png}
-    \caption{Time series plot of the average daily option and future contracts trading volume per annum. Data provided by the Options Clearing Corporation (OCC) \cite{THEOCC}. Source code \autoref{ApPy:lst option volume plot}}
+    \caption{Time series plot of the average daily option and future contracts trading volume per annum. Data provided by the Options Clearing Corporation (OCC) \cite{THEOCC}. 
+    %Source code: \autoref{ApPy:lst option volume plot}
+    }
     \label{C1fig:OptionVolume}
 \end{figure}
 
-\section{A brief history of options}
+\section{A brief overview of call and put options}
 
+Options are a particular type of financial derivative, a contract that details the conditions under which payments are made between two groups. They are purchased for a set fee, and in return the buyer is granted the right, but not the obligation to buy or sell an underlying asset - such as commodities, stocks or bonds - for a predetermined price, known as the strike price.
+\nline
+Call options allow the buyer to purchase an asset for the strike price at a future date. The buyer can make a return if the value of the asset is worth more than the strike price at the date of expiration. Alternatively, put options allow the buyer to sell an asset for the strike price at a future date and the buyer can make a return if the value of the asset is worth less than the strike price at the date of expiration.
+\nline
+The option market is widely considered a venue for informed trading \cite{li2021effect,hu2014,chak2004}, that is, investors trading with superior knowledge of the probability distribution of share prices, through either access to private information or skillful processing of public information \cite{grossman1975application}. 
 
+\subsection{A short history of option trading}
+
+Options evolved from their near counterparts, futures, which are financial contracts obligating the buyer to purchase an asset or the seller to sell an asset at a predetermined date and price. The history of futures far predates options as they were implemented in Ancient Greece when farmers arranged future contracts that allowed them to prearrange a price for their harvest. 
+\nline
+The first record of options dates back to the Middle Ages, when traders developed contracts that granted the buyer the right to purchase the cargo of a ship on arrival if the intended buyer didn't show. Options were also used during the Dutch tulip bubble of the seventeenth century when the popularity of tulips as status symbols drove up their price, creating a bubble{\url{http://www.finra.org/investors/ancient-greece-wall-street-brief-history-options-market} (date accessed 23/02/19).\label{history}}. Tulip growers would buy puts to protect their profits in case the price of tulip bulbs went down and wholesalers would buy calls to protect against the risk of tulip bulbs going up. When the bubble eventually burst, due to the unregulated nature of the option market, there was no way to force investors to fulfil their obligations of the options contracts. This ultimately led to options gaining a dubious reputation and numerous bans were placed on them throughout Europe, Japan and some states in America. 
+\nline
+During the late nineteenth century, brokers started to arrange deals between buyers and sellers of options for particular stocks at prices that were arranged between the two parties. Trades were arranged similarly until the 1960s when the options market started to become regulated by the Chicago Board of Trade. In 1973, the Chicago Board of Options Exchange (CBOE) began trading and for the first time options contracts were properly standardized. At the same time, the Options Clearing Corporation was established for centralized clearing and ensuring the proper fulfillment of contracts, ensuring that they were honoured{\url{http://www.optionstrading.org/history/} (date accessed 23/02/19).}.
+
+%There also exist other types of financial derivatives, such as futures contracts - these are similar to options except that they carry the obligation to buy or sell the particular asset - and the first implementation of such derivatives dates back to as early as ancient Greece. For example, during this time period, farmers benefited from opportunities to sell corn within agricultural markets under futures contracts (or known more simply as futures). It is likewise thought that, within a contracted transaction, Aristotle provided the rights to use olive presses to fellow ancient Greek philosopher Thales of Miletus. This resulted in profit for the investor, who had astutely speculated an overly abundant harvest. 
+
+%On the other hand, the first example of options came during the Middle Ages, when traders developed contracts that granted the buyer with the right to purchase the cargo of a ship on arrival. Options were likewise used during the infamous Dutch tulip bubble of the seventeenth century, where contracted prices for the newly fashionable tulip bulbs skyrocketed for a period of months, before eventually collapsing. The first organised options market was created within London during the same century.
+
+%This being said, options were often traded in fairly dubious circumstances, with parties not fulfilling their obligations leading to big losses for investors. Within the USA, this can be seen mainly as a result of the unstandardised options markets that existed during the late nineteenth century. Accordingly, at the turn of the century Louis Bachelier published a thesis detailing a method to model option prices, incorporating both Brownian motion and the Wiener process. This greatly influenced the eventual publication of the Black-Scholes formula, as discussed below within Section $\ref{sec:personnel}$.
 
 \section{Standard options}
 
-A standard option is a contract between two parties which gives the holder the right to buy (or sell) an asset for an agreed upon (exercise) price prior to, or on a determined (expiry) time in the future; regardless of the current (spot) price. Since the holder of the contract is not obliged to exercise the contract at the expiry time, they would not hold any liability in the absence of a price to purchase the option. The problem then becomes what is the correct price to charge the holder of the option to balance this inequality of liability. 
+A standard option is a contract between two parties which gives the holder the right to buy (or sell) an asset for an agreed upon (exercise) price prior to, or on a determined (expiry) time in the future; regardless of the current (spot) price. Since the holder of the contract is not obliged to exercise the contract at the expiry time, they do not hold any liability in the absence of a price to purchase the option. The problem then becomes what is the correct price to charge the holder of the option to balance this inequality of liability. 
 
 \section{Asian options}
 
