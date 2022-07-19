@@ -4,32 +4,32 @@
 
 This report studies a vital financial derivative in today's markets, namely options. The importance of the option market has been shown by empirical studies which suggest that option trading improves information efficiency in the broader stock market \cite{PanInfoEffic,li2021effect}, and also that firms with listed options experience lower implied cost of equity capital \cite{naikerLowEquity}; indicating that options trading reduces the cost of capital \cite{li2021effect}. The popularity of the options market can easily be seen by the exponential growth in their trading volume since standardized, exchange-traded stock options were first listed in The Chicago Board Options Exchange in 1973 \cite{markham2002financial}; shown in \autoref{C1fig:OptionVolume}. In 2020 single stock option trading volume became higher than the underlying stock volume for the first time ever \cite{yahooOptions}. 
 \nline
-It is this explosive popularity and significance which have motivated this report. We will begin by describing standard options and explore popular methods that are used to price them. We will then move onto Asian options and look at the literature surrounding how to price them before implementing several pricing methods with the use of \textsc{MATLAB}. Furthermore, we will then take an analytical approach to determine how Asian options can be priced accurately and efficiently.
+It is this explosive popularity and significance which have motivated this report. We will begin by describing standard options and explore popular methods that are used to price them. We will then move onto Asian options and look at the literature surrounding how to price them before implementing several pricing methods with the use of \textsc{Matlab}. Furthermore, we will then take an analytical approach to determine how Asian options can be priced accurately and efficiently.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.65\textwidth]{Chapters/C1/plots/OptionVolume.png}
     \caption{Time series plot of the average daily option and future contracts trading volume per annum. Data provided by the Options Clearing Corporation (OCC) \cite{THEOCC}. 
-    %Source code: \autoref{ApPy:lst option volume plot}
+    Source code: \autoref{ApPy:lst option volume plot}
     }
     \label{C1fig:OptionVolume}
 \end{figure}
 
 \section{A brief overview of call and put options}
 
-Options are a particular type of financial derivative, a contract that details the conditions under which payments are made between two groups. They are purchased for a set fee, and in return the buyer is granted the right, but not the obligation to buy or sell an underlying asset - such as commodities, stocks or bonds - for a predetermined price, known as the strike price.
+Options are a particular type of financial derivative, a contract that details the conditions under which payments are made between two counterparties. They are purchased for a set fee, and in return the buyer is granted the right, but not the obligation to buy or sell an underlying asset - such as commodities, stocks or bonds - for a predetermined price (the strike price) on or before a determined date (the expiry date).
 \nline
-Call options allow the buyer to purchase an asset for the strike price at a future date. The buyer can make a return if the value of the asset is worth more than the strike price at the date of expiration. Alternatively, put options allow the buyer to sell an asset for the strike price at a future date and the buyer can make a return if the value of the asset is worth less than the strike price at the date of expiration.
+Call options allow the buyer to purchase an asset for the strike price at a future date. The buyer can make a return if the value of the asset is worth more than the strike price when exercised. Alternatively, put options allow the buyer to sell an asset for the strike price at a future date and the buyer can make a return if the value of the asset is worth less than the strike price when exercised.
 \nline
 The option market is widely considered a venue for informed trading \cite{li2021effect,hu2014,chak2004}, that is, investors trading with superior knowledge of the probability distribution of share prices, through either access to private information or skillful processing of public information \cite{grossman1975application}. 
 
 \subsection{A short history of option trading}
 
-Options evolved from their near counterparts, futures, which are financial contracts obligating the buyer to purchase an asset or the seller to sell an asset at a predetermined date and price. The history of futures far predates options as they were implemented in Ancient Greece when farmers arranged future contracts that allowed them to prearrange a price for their harvest. 
+The history of financial options can be traced as far back as 6th century b.c. when ancient Greek mathematician and philosopher Thales of Miletus predicted through his astrological knowledge there was going to be a great olive harvest. As he did not have much money, he used what he had as a deposit on the rights to the local olive presses; due to no competition he secured this at a relatively low price. When the harvest proved to be bountiful leading to high demand, Thales charged a high price for use of the presses and reaped a considerable profit. His deposit gave him the right but not the obligation to hire the presses, thus his losses were limited to his initial deposit \cite{OptionFirst, 1877aristotle}.
 \nline
-The first record of options dates back to the Middle Ages, when traders developed contracts that granted the buyer the right to purchase the cargo of a ship on arrival if the intended buyer didn't show. Options were also used during the Dutch tulip bubble of the seventeenth century when the popularity of tulips as status symbols drove up their price, creating a bubble\url{http://www.finra.org/investors/ancient-greece-wall-street-brief-history-options-market} (date accessed 23/02/19). Tulip growers would buy puts to protect their profits in case the price of tulip bulbs went down and wholesalers would buy calls to protect against the risk of tulip bulbs going up. When the bubble eventually burst, due to the unregulated nature of the option market, there was no way to force investors to fulfil their obligations of the options contracts. This ultimately led to options gaining a dubious reputation and numerous bans were placed on them throughout Europe, Japan and some states in America. 
+Whilst this is quite a positive look on option trading, throughout history this has not always been the case. During the Dutch tulip bubble of the seventeenth century when the popularity of tulips as status symbols drove up their price, creating a bubble \cite{dash2011tulipomania}. Tulip growers would buy puts to protect their profits in case the price of tulip bulbs went down and wholesalers would buy calls to protect against the risk of tulip bulbs going up. When the bubble eventually burst, due to the unregulated nature of the option market, there was no way to force investors to fulfil their obligations of the options contracts. This ultimately led to options gaining a dubious reputation and bans were later placed on them within Britain between 1733-1860 \cite{OptionBan}. 
 \nline
-During the late nineteenth century, brokers started to arrange deals between buyers and sellers of options for particular stocks at prices that were arranged between the two parties. Trades were arranged similarly until the 1960s when the options market started to become regulated by the Chicago Board of Trade. In 1973, the Chicago Board of Options Exchange (CBOE) began trading and for the first time options contracts were properly standardized. At the same time, the Options Clearing Corporation was established for centralized clearing and ensuring the proper fulfillment of contracts, ensuring that they were honoured\url{http://www.optionstrading.org/history/}.
+During the late nineteenth century, brokers started to arrange deals between buyers and sellers of options for particular stocks at prices that were arranged between the two parties. Trades were arranged similarly until the 1960s when the options market started to become regulated by the Chicago Board of Trade. In 1973, the Chicago Board of Options Exchange (CBOE) began trading and for the first time options contracts were properly standardized. At the same time, the Options Clearing Corporation was established for centralized clearing and ensuring the proper fulfillment of contracts, ensuring that they were honored \cite{markham2002financial}.
 
 %There also exist other types of financial derivatives, such as futures contracts - these are similar to options except that they carry the obligation to buy or sell the particular asset - and the first implementation of such derivatives dates back to as early as ancient Greece. For example, during this time period, farmers benefited from opportunities to sell corn within agricultural markets under futures contracts (or known more simply as futures). It is likewise thought that, within a contracted transaction, Aristotle provided the rights to use olive presses to fellow ancient Greek philosopher Thales of Miletus. This resulted in profit for the investor, who had astutely speculated an overly abundant harvest. 
 
@@ -37,10 +37,28 @@ During the late nineteenth century, brokers started to arrange deals between buy
 
 %This being said, options were often traded in fairly dubious circumstances, with parties not fulfilling their obligations leading to big losses for investors. Within the USA, this can be seen mainly as a result of the unstandardised options markets that existed during the late nineteenth century. Accordingly, at the turn of the century Louis Bachelier published a thesis detailing a method to model option prices, incorporating both Brownian motion and the Wiener process. This greatly influenced the eventual publication of the Black-Scholes formula, as discussed below within Section $\ref{sec:personnel}$.
 
-\section{Standard options}
+\subsection{Standard options}
 
-A standard option is a contract between two parties which gives the holder the right to buy (or sell) an asset for an agreed upon (exercise) price prior to, or on a determined (expiry) time in the future; regardless of the current (spot) price. Since the holder of the contract is not obliged to exercise the contract at the expiry time, they do not hold any liability in the absence of a price to purchase the option. The problem then becomes what is the correct price to charge the holder of the option to balance this inequality of liability. 
+A standard option comes in two styles; European: which restricts the holder of the option to only exercise the option on the expiry date, and American: which allows the holder to exercise the option at anytime up till or on the expiry date. They will take the current value of the underlying asset as the spot price - that is the price that the asset can be purchased for on the open market. The payoff in this case then becomes the difference between the spot price and strike price.
 
-\section{Asian options}
+\subsection{Asian options}
 
-Whilst standard options, namely European and American style involve using the spot price as the underlying value of the asset; this is not always the case with so-called exotic options. Exotic options differ in their payment structures, expiration dates, and/or strike prices. In the case of exotic fixed-strike price Asian options, the averaging price of the asset is used in place of the underlying asset value. This differs from fixed-price Asian options which instead use the averaging price of the asset to take place of the strike price. These are the two main variations of Asian style options but both of these can be varied further in how the averaging is calculated, for example: geometrically, arithmetically, average taken every day or average taken at the start of each month and so on. They can be varied further by having an expiry structure matching a European or American style option.
+Whilst standard options involve using the spot price as the underlying value of the asset; this is not always the case with so-called exotic options. Exotic options differ in their payment structures, expiration dates, and/or strike prices. In the case of exotic fixed-strike price Asian options, the averaging price of the asset is used in place of the underlying asset value. This differs from fixed-price Asian options which instead use the averaging price of the asset to take place of the strike price. These are the two main variations of Asian style options but both of these can be varied further in how the averaging is calculated, for example: geometrically, arithmetically, average taken every day or average taken at the start of each month and so on. They can be varied further by having an expiry structure matching a European or American style option.
+
+\section{Pricing options}
+
+Since the holder of the contract is not obliged to exercise the contract at the expiry time, they do not hold any liability in the absence of a price to purchase the option. The problem then becomes, what is the correct price to charge the holder of the option to balance this inequality of liability.
+
+\subsection{Pricing standard options}
+
+\subsubsection{Binomial method}
+
+\subsubsection{Black-Scholes Formula}
+
+\subsection{Pricing Asian options}
+
+\subsubsection{Hull-White model}
+
+\subsubsection{Costabile adjusted binomial method}
+
+\subsubsection{Analytical solution for geometric average Asian options}
