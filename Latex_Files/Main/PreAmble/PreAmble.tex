@@ -5,7 +5,7 @@
 \newcommand\cov[2]{\text{Cov}\left[\,#1,#2\,\right]} %Cov[x1,x2]
 \newcommand\E[1]{\text{E}\left[\,#1\,\right]} %E[]
 \newcommand\IQR{\text{I}\text{Q}\text{R}}
-\newcommand\nline{\par\vspace{4pt}}
+\newcommand\nline\par\vspace{4pt}
 \newcommand\sOneSize{0.4625}
 \newcommand\sTwoRes{0.70}
 \newcommand\PgSz{\scriptsize}
@@ -30,10 +30,9 @@
   breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
   }
 %% Defining Style for R Code and Python within LstListing Environment
-\input{PreAmble/ProgrammingLangFormat}
+\input{PreAmble/ProgrammingLangFormat.tex}
 %% Hyperlink customization
 \hypersetup{
-  %hidelinks    = false, %Remove color box
   frenchlinks  = false, %Small caps for hyperlinks
   colorlinks   = true, %Colours links instead of boxes
   urlcolor     = blue, %Colour for external hyperlinks
@@ -44,9 +43,9 @@
 \makeatletter
 \renewcommand*\env@matrix[1][\arraystretch]{%
   \edef\arraystretch{#1}%
-  \hskip -\arraycolsep
-  \let\@ifnextchar\new@ifnextchar
-  \array{*\c@MaxMatrixCols c}}
+  \hskip -\arraycolsep{}
+  \let\@ifnextchar\new@ifnextchar{}
+  \array{*\c@MaxMatrixCols{} c}}
 \makeatother
 %%Capitalising \autoref
 \renewcommand*{\chapterautorefname}{Chapter}

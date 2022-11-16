@@ -12,3 +12,10 @@
 {"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\Qd [1]Var[ #1 ] [2]Cov[ #1,#2 ] [1]E[ #1 ] IQR 0.4625 0.70 caption=, basicstyle=, numbers=left, numberstyle=, stepnumber=1, numbersep=5pt, backgroundcolor=, showspaces=false, showstringspaces=false, showtabs=false, frame=single, rulecolor=, tabsize=2, captionpos=t, breaklines=true, breakatwhitespace=false, [1][]#1 - * c Table List of Figures and Tables [hang] .\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\Qd [1]Var[ #1 ] [2]Cov[ #1,#2 ] [1]E[ #1 ] IQR 0.4625 0.70 caption=, basicstyle=, numbers=left, numberstyle=, stepnumber=1, numbersep=5pt, backgroundcolor=, showspaces=false, showstringspaces=false, showtabs=false, frame=single, rulecolor=, tabsize=2, captionpos=t, breaklines=true, breakatwhitespace=false, [1][]#1 - * c Table List of Figures and Tables [hang] .\\E$"}
 {"rule":"EN_COMPOUNDS","sentence":"^\\QAre risk free government bonds risk free indeed\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\Q[showzone=false] 1.0\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\Q[style=Matlab-editor, basicstyle=]../../MATLAB Files/Functions/findInSorted.m\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\Q[style=Matlab-editor, basicstyle=]../../MATLAB Files/BinoAsian.m\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\Q[label=ApPy:lst option volume plot, language=PyBrIM, style=colorEX, basicstyle=]../../Python Files/OptionVolume.py\\E$"}
+{"rule":"DOUBLE_PUNCTUATION","sentence":"^\\Q[label=ApPy:lst option volume plot, language=PyBrIM, style=colorEX, basicstyle=]../../Python Files/OptionVolume.py\\E$"}
+{"rule":"DOUBLE_PUNCTUATION","sentence":"^\\Q[style=Matlab-editor, basicstyle=]../../MATLAB Files/Functions/findInSorted.m\\E$"}
+{"rule":"DOUBLE_PUNCTUATION","sentence":"^\\Q[style=Matlab-editor, basicstyle=]../../MATLAB Files/BinoAsian.m\\E$"}

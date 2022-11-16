@@ -1,9 +1,8 @@
 % !TeX root = ..\..\main.tex
 \chapter{Introduction}
-\pagenumbering{arabic} %Start roman numbering
-
+\pagenumbering{arabic}
 This report studies a vital financial derivative in today's markets, namely options. The importance of the option market has been shown by empirical studies which suggest that option trading improves information efficiency in the broader stock market \cite{PanInfoEffic,li2021effect}, and also that firms with listed options experience lower implied cost of equity capital \cite{naikerLowEquity}; indicating that options trading reduces the cost of capital \cite{li2021effect}. The popularity of the options market can easily be seen in \autoref{C1fig:OptionVolume}, which shows the exponential growth in trading volume since standardized, exchange-traded stock options were first listed in The Chicago Board Options Exchange in 1973 \cite{markham2002financial}. In 2020 single stock option trading volume became higher than the underlying stock volume for the first time ever \cite{yahooOptions}. 
-\nline
+\nline{}
 It is this explosive popularity and significance which have motivated this report. We will begin by describing standard options and explore popular methods that are used to price them. We will then move onto Asian options and look at the literature surrounding how to price them before implementing several pricing methods with the use of \textsc{Matlab}. Furthermore, we will then take an analytical approach to determine how Asian options can be priced accurately and efficiently.
 
 \begin{figure}[H]
@@ -17,18 +16,17 @@ It is this explosive popularity and significance which have motivated this repor
 
 \section{A brief overview of call and put options}
 
-Options are a particular type of financial derivative, a contract that details the conditions under which payments are made between two counterparties. They are purchased for a set fee, and in return the buyer is granted the right, but not the obligation to buy or sell an underlying asset - such as commodities, stocks or bonds - for a predetermined price (the strike price) on or before a determined date (the expiry date).
-\nline
+Options are a particular type of financial derivative, a contract that details the conditions under which payments are made between two counterparties. They are purchased for a set fee, and in return the buyer is granted the right, but not the obligation to buy or sell an underlying asset --- such as commodities, stocks or bonds --- for a predetermined price (the strike price) on or before a determined date (the expiry date).
+\nline{}
 Call options allow the buyer to purchase an asset for the strike price at a future date. The buyer can make a return if the value of the asset is worth more than the strike price when exercised. Alternatively, put options allow the buyer to sell an asset for the strike price at a future date and the buyer can make a return if the value of the asset is less than the strike price when exercised.
-\nline
+\nline{}
 The option market is widely considered a venue for informed trading \cite{li2021effect,hu2014,chak2004}, that is, investors trading with superior knowledge of the probability distribution of share prices, through either access to private information or skillful processing of public information \cite{grossman1975application}. 
 
 \subsection{A short history of option trading}
-
 The history of financial options can be traced as far back as 6th century BCE when ancient Greek mathematician and philosopher Thales of Miletus predicted through his astrological knowledge there was going to be a great olive harvest. As he did not have much money, he used what he had as a deposit on the rights to the local olive presses; due to no competition he secured this at a relatively low price. When the harvest proved to be bountiful leading to high demand, Thales charged a high price for use of the presses and reaped a considerable profit. His deposit gave him the right but not the obligation to hire the presses, thus his losses were limited to his initial deposit \cite{OptionFirst, 1877aristotle}.
-\nline
+\nline{}
 Whilst this is quite a positive look on option trading, throughout history this has not always been the case. During the Dutch tulip bubble of the seventeenth century, tulips were seen as a status symbols which caused high demand and consequently drove their prices up, creating a bubble \cite{dash2011tulipomania}. Tulip growers would buy puts to protect their profits in case the price of tulip bulbs went down and wholesalers would buy calls to protect against the risk of tulip bulbs going up. When the bubble eventually burst, there was no way to force investors to fulfil their obligations of the options contracts, due to the unregulated nature of the option market. This ultimately led to options gaining a dubious reputation and bans were later placed on them within Britain between 1733-1860 \cite{OptionBan}. 
-\nline
+\nline{}
 During the late nineteenth century, brokers started to arrange deals between buyers and sellers of options for particular stocks at prices that were arranged between the two parties. Trades were arranged similarly until the 1960s when the options market started to become regulated by the Chicago Board of Trade. In 1973, the Chicago Board of Options Exchange (CBOE) began trading and for the first time options contracts were properly standardized. At the same time, the Options Clearing Corporation was established for centralized clearing and enforcing the proper fulfillment of contracts, ensuring that they were honored \cite{markham2002financial}.
 
 %There also exist other types of financial derivatives, such as futures contracts - these are similar to options except that they carry the obligation to buy or sell the particular asset - and the first implementation of such derivatives dates back to as early as ancient Greece. For example, during this time period, farmers benefited from opportunities to sell corn within agricultural markets under futures contracts (or known more simply as futures). It is likewise thought that, within a contracted transaction, Aristotle provided the rights to use olive presses to fellow ancient Greek philosopher Thales of Miletus. This resulted in profit for the investor, who had astutely speculated an overly abundant harvest. 
@@ -39,7 +37,7 @@ During the late nineteenth century, brokers started to arrange deals between buy
 
 \subsection{Standard options}
 
-A standard option comes in two styles; European: which restricts the holder of the option to only exercise the option on the expiry date, and American: which allows the holder to exercise the option at anytime up till or on the expiry date. They will take the current value of the underlying asset as the spot price - that is the price that the asset can be purchased for on the open market. The payoff in this case then becomes the difference between the spot price and strike price.
+A standard option comes in two styles; European: which restricts the holder of the option to only exercise the option on the expiry date, and American: which allows the holder to exercise the option at anytime up till or on the expiry date. They will take the current value of the underlying asset as the spot price --- that is the price that the asset can be purchased for on the open market. The payoff in this case then becomes the difference between the spot price and strike price.
 
 \subsection{Asian options}
 
@@ -55,21 +53,21 @@ We define our two classes of assets with the following assumptions:
 
 \subsubsection{Risk-free assets}
 
-Risk-free assets are assumed to have no uncertainty in regard to their future value and defined as returning interest continuously compounded at a fixed rate $r$. Hence, an investment of $A$ made at time $t$ will return $A^{r\left(T-t\right)}$ at time $T>t$ with no uncertainty. These can be positive e.g., making an investment, or negative e.g., taking out a loan. Risk-free assets are akin to fixed rate investments at a well-know bank or government bonds in practice. However, even sovereign nations have been known to default on their bond repayments so in reality are not truly risk-free, but instead considered low-risk \cite{kitanov2015risk}.
+Risk-free assets are assumed to have no uncertainty in regard to their future value and defined as returning interest continuously compounded at a fixed rate \(r\). Hence, an investment of \(A\) made at time \(t\) will return \(A^{r\left(T-t\right)}\) at time \(T>t\) with no uncertainty. These can be positive e.g., making an investment, or negative e.g., taking out a loan. Risk-free assets are akin to fixed rate investments at a well-know bank or government bonds. However, even sovereign nations have been known to default on their bond repayments so in reality are not truly risk-free, but instead considered low-risk \cite{kitanov2015risk}.
 
 \subsubsection{Risky assets}
 
-Risky assets are assets in which the future value can not be determined without at least some uncertainty. These are typically shares in a company or commodities such as gold or oil. These assets are traded on the open market and their value is heavily dependent on the balance of supply and demand of the asset; this in turn is dependent on so many variables that we assume their future value to be a random process. Depending on our model we can make different assumptions on the distribution of the process and thus how the value evolves over a time period. In practice there are people who argue that future value of risky assets are truly random \cite{RandomWalkFama}, whilst others believe they can be at least partly deterministic where patterns and trends exists \cite{shiller1985testing}.
+Risky assets are assets in which the future value can not be determined without at least some uncertainty. These are typically shares in a company or commodities such as gold or oil. These assets are traded on the open market and their value is heavily dependent on the balance of supply and demand of the asset; this in turn is dependent on so many variables that we assume their future value to be a random process. Depending on our model we can make different assumptions on the distribution of the process and thus how the value evolves over a time period. In practice there are people who argue that future value of risky assets are truly random \cite{RandomWalkFama}, whilst others believe they can be at least partly deterministic where patterns and trends exists \cite{shiller}.
 
 \subsection{Market Assumptions}
 
-We shall assume that an investor may hold any quantity (including negative and/or fractional) of an asset, known as \textit{divisibility} and \textit{short-selling} assumption. We will also assume that our market is \textit{frictionless} - that is that any quantity of assets can be bought and sold at the same price with no transaction cost and are entirely \textit{liquid} meaning there is always a buyer for every seller and vice versa.
-\nline
+We shall assume that an investor may hold any quantity (including negative and/or fractional) of an asset, known as \textit{divisibility} and \textit{short-selling} assumption. We will also assume that our market is \textit{frictionless} --- that is that any quantity of assets can be bought and sold at the same price with no transaction cost and are entirely \textit{liquid} meaning there is always a buyer for every seller and vice versa.
+\nline{}
 In practice these assumptions do not accurately represent the real markets, for example it is common place for markets to have bid-ask spreads which represents the different in price at which you can buy and sell assets for. Furthermore, transaction costs are impossible to fully eliminate - even in scenarios with no tax or commission fees, buying or selling assets (especially in large quantities) will in theory have an effect on the supply and demand of that asset; this introduces market impact costs \cite{moro2009market}. There are other transaction fees to also consider such as: time spent deciding what assets to buy, computing power costs and their associated opportunity costs.
 
-\subsubsection{No-Arbitrage Assumption}
+\subsubsection{No-Arbitrage assumption}
 
-Further to our above assumptions is perhaps the most important assumption on our market and that is the No-Arbitrage assumption, sometimes called the no free-lunch principle.
+Perhaps our most important market assumption is the No-Arbitrage principle; sometimes referred to as the no free-lunch principle. This assumption states that there can be no risk-free way to get a better rate of return than the market risk-free interest rate, \(r\). The logic behind this assumption is that if there exists a way to earn a higher rate of return than \(r\) with no initial outlay; than other traders would employ the same method and market forces would eliminate the arbitrage opportunity. This assumption assumes that markets are perfectly efficient meaning all traders have access to the same information and that market adjustments to supply and demand happen instantaneously, which we know not to be true in practice.
 
 \section{Asset pricing models}
 
@@ -83,8 +81,6 @@ Since the holder of the contract is not obliged to exercise the contract at the 
 
 \subsubsection{Binomial method}
 
-\subsection{Monte-Carlo method}
-
 \subsubsection{Black-Scholes Formula}
 
 \subsection{Pricing Asian options}
@@ -94,3 +90,5 @@ Since the holder of the contract is not obliged to exercise the contract at the 
 \subsubsection{Costabile adjusted binomial method}
 
 \subsubsection{Analytical solution for geometric average Asian options}
+
+\subsection{Monte-Carlo method}
