@@ -1,14 +1,19 @@
 % !TeX root = ..\main.tex
 \begin{appendices}
-    \chapter{\textsc{Matlab} Files}
+    \chapter*{Appendices}
+    \addappheadtotoc
+    \renewcommand{\setthesection}{\Alph{section}}
+    \begin{subappendices}
+        \section{\textsc{Matlab} Files}
         All files can be found: \small\url{https://github.com/leele2/Mathematics-in-Business-Project/tree/master/MATLAB%20Files}
 
-        \lstinputlisting[style=Matlab-editor, basicstyle=\PgSz]{../../MATLAB Files/BinoAsian.m}
+            \lstinputlisting[style=Matlab-editor, basicstyle=\PgSz]{../../MATLAB Files/BinoAsian.m}
+            \lstinputlisting[style=Matlab-editor, basicstyle=\PgSz]{../../MATLAB Files/Functions/findInSorted.m}
 
-        \lstinputlisting[style=Matlab-editor, basicstyle=\PgSz]{../../MATLAB Files/Functions/findInSorted.m}
+        \section{Python Files}
+            All files can be found: \small\url{https://github.com/leele2/Mathematics-in-Business-Project/tree/master/Python%20Files}
 
-    \chapter{Python Files}
-        All files can be found: \small\url{https://github.com/leele2/Mathematics-in-Business-Project/tree/master/Python%20Files}
+            \lstinputlisting[label=ApPy:lst option volume plot, language=PyBrIM, style=colorEX, basicstyle=\PgSz]{../../Python Files/OptionVolume.py}
 
-        \lstinputlisting[label=ApPy:lst option volume plot, language=PyBrIM, style=colorEX, basicstyle=\PgSz]{../../Python Files/OptionVolume.py}
+    \end{subappendices}
 \end{appendices}

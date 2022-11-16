@@ -24,13 +24,15 @@
 \RequirePackage{xkeyval}
 \RequirePackage{etoolbox}
 \usepackage{csvsimple, booktabs, siunitx}
-\usepackage[titletoc]{appendix}
+\usepackage{appendix}
+\usepackage{chngcntr}
 \usepackage{matlab-prettifier}
 \usepackage[backend=biber,style=alphabetic,sorting=ynt]{biblatex}
 \usepackage{hyperref}
 \addbibresource{mybibliography.bib}
 % Custom configurations and commands
 \input{PreAmble/PreAmble.tex}
+\AtBeginDocument{\counterwithin{lstlisting}{section}} %Lstinput takes name from section rather than chapter
 \begin{document}
     \pagenumbering{roman} %Start roman numbering
     \input{Title/Title.tex}
@@ -42,7 +44,7 @@
         \listoffigures
     \endgroup
     \input{Chapters/C1/C1.tex}
-    \printbibheading
+    \printbibheading[title=References, heading=bibintoc]{}
     \printbibliography[nottype=online,heading=subbibliography,title={Books and Academic Sources}]
     \printbibliography[type=online,heading=subbibliography,title={Online Articles}]
     \pagebreak
