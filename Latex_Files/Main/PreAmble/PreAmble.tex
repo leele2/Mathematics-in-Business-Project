@@ -9,6 +9,7 @@
 \newcommand\sOneSize{0.4625}
 \newcommand\sTwoRes{0.70}
 \newcommand\PgSz{\scriptsize}
+\newcommand{\nat}{\mathcal{N}}
 %% Defaults for LstListing Environment
 \lstset{
   caption=\lstname,
@@ -53,7 +54,7 @@
 \renewcommand*{\sectionautorefname}{Section}
 %%Merging list of tables and figures
 \def\table{\def\figurename{Table}\figure}
-\let\endtable\endfigure 
+\let\endtable\endfigure{}
 \renewcommand\listfigurename{List of Figures and Tables}
 %%Formating Chapter spacing and linebreak
 \titleformat{\chapter}[hang] 

@@ -19,3 +19,6 @@
 {"rule":"DOUBLE_PUNCTUATION","sentence":"^\\Q[label=ApPy:lst option volume plot, language=PyBrIM, style=colorEX, basicstyle=]../../Python Files/OptionVolume.py\\E$"}
 {"rule":"DOUBLE_PUNCTUATION","sentence":"^\\Q[style=Matlab-editor, basicstyle=]../../MATLAB Files/Functions/findInSorted.m\\E$"}
 {"rule":"DOUBLE_PUNCTUATION","sentence":"^\\Q[style=Matlab-editor, basicstyle=]../../MATLAB Files/BinoAsian.m\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\Q[showzone=false] 1.0 [title=References, heading=bibintoc]\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\Q[style=Matlab-editor, basicstyle=]../../MATLAB Files/BinoAsian.m [style=Matlab-editor, basicstyle=]../../MATLAB Files/Functions/findInSorted.m\\E$"}
+{"rule":"DOUBLE_PUNCTUATION","sentence":"^\\Q[style=Matlab-editor, basicstyle=]../../MATLAB Files/BinoAsian.m [style=Matlab-editor, basicstyle=]../../MATLAB Files/Functions/findInSorted.m\\E$"}
