@@ -9,7 +9,8 @@
 \newcommand\sOneSize{0.4625}
 \newcommand\sTwoRes{0.70}
 \newcommand\PgSz{\scriptsize}
-\newcommand{\nat}{\mathcal{N}}
+\newcommand{\nat}{\mathbb{N}}
+\DeclareFontShape{OT1}{cmr}{bx}{sc}{<-> cmbcsc10}{}
 %% Defaults for LstListing Environment
 \lstset{
   caption=\lstname,
@@ -45,7 +46,7 @@
 \renewcommand*\env@matrix[1][\arraystretch]{%
   \edef\arraystretch{#1}%
   \hskip -\arraycolsep{}
-  \let\@ifnextchar\new@ifnextchar{}
+  \let{}\@ifnextchar\new@ifnextchar{}
   \array{*\c@MaxMatrixCols{} c}}
 \makeatother
 %%Capitalising \autoref

@@ -1,16 +1,14 @@
 % !TeX root = ..\..\main.tex
 \chapter{Introduction}
 \pagenumbering{arabic}
-This report studies a vital financial derivative in today's markets, namely options. The importance of the option market has been shown by empirical studies which suggest that option trading improves information efficiency in the broader stock market \cite{PanInfoEffic,li2021effect}, and also that firms with listed options experience lower implied cost of equity capital \cite{naikerLowEquity}; indicating that options trading reduces the cost of capital \cite{li2021effect}. The popularity of the options market can easily be seen in \autoref{C1fig:OptionVolume}, which shows the exponential growth in trading volume since standardized, exchange-traded stock options were first listed in The Chicago Board Options Exchange in 1973 \cite{markham2002financial}. In 2020 single stock option trading volume became higher than the underlying stock volume for the first time ever \cite{yahooOptions}. 
+This report studies a vital financial derivative in today's markets, namely options. The importance of the option market has been shown by empirical studies which suggest that option trading improves information efficiency in the broader stock market~\cite{PanInfoEffic,li2021effect}, and also that firms with listed options experience lower implied cost of equity capital~\cite{naikerLowEquity}; indicating that options trading reduces the cost of capital~\cite{li2021effect}. The popularity of the options market can easily be seen in \autoref{C1fig:OptionVolume}, which shows the exponential growth in trading volume since standardized, exchange-traded stock options were first listed in The Chicago Board Options Exchange in 1973~\cite{markham2002financial}. In 2020 single stock option trading volume became higher than the underlying stock volume for the first time ever~\cite{yahooOptions}. 
 \nline{}
 It is this explosive popularity and significance which have motivated this report. We will begin by describing standard options and explore popular methods that are used to price them. We will then move onto Asian options and look at the literature surrounding how to price them before implementing several pricing methods with the use of \textsc{Matlab}. Furthermore, we will then take an analytical approach to determine how Asian options can be priced accurately and efficiently.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.65\textwidth]{Chapters/C1/plots/OptionVolume.png}
-    \caption{Time series plot of the average daily option trading volume per annum. Data provided by the Options Clearing Corporation (OCC) \cite{THEOCC}. 
-    Source code: \autoref{ApPy:lst option volume plot}
-    }\label{C1fig:OptionVolume}
+    \caption{Time series plot of the average daily option trading volume per annum. Data provided by the Options Clearing Corporation (OCC)~\cite{THEOCC}. Source code: \autoref{ApPy:lst option volume plot}}\label{C1fig:OptionVolume}
 \end{figure}
 
 \section{A brief overview of call and put options}
@@ -19,14 +17,14 @@ Options are a particular type of financial derivative, a contract that details t
 \nline{}
 Call options allow the buyer to purchase an asset for the strike price at a future date. The buyer can make a return if the value of the asset is worth more than the strike price when exercised. Alternatively, put options allow the buyer to sell an asset for the strike price at a future date and the buyer can make a return if the value of the asset is less than the strike price when exercised.
 \nline{}
-The option market is widely considered a venue for informed trading \cite{li2021effect,hu2014,chak2004}, that is, investors trading with superior knowledge of the probability distribution of share prices, through either access to private information or skillful processing of public information \cite{grossman1975application}. 
+The option market is widely considered a venue for informed trading~\cite{li2021effect,hu2014,chak2004}, that is, investors trading with superior knowledge of the probability distribution of share prices, through either access to private information or skillful processing of public information~\cite{grossman1975application}. 
 
 \subsection{A short history of option trading}
-The history of financial options can be traced as far back as 6th century BCE when ancient Greek mathematician and philosopher Thales of Miletus predicted through his astrological knowledge there was going to be a great olive harvest. As he did not have much money, he used what he had as a deposit on the rights to the local olive presses; due to no competition he secured this at a relatively low price. When the harvest proved to be bountiful leading to high demand, Thales charged a high price for use of the presses and reaped a considerable profit. His deposit gave him the right but not the obligation to hire the presses, thus his losses were limited to his initial deposit \cite{OptionFirst, 1877aristotle}.
+The history of financial options can be traced as far back as 6th century BCE when ancient Greek mathematician and philosopher Thales of Miletus predicted through his astrological knowledge there was going to be a great olive harvest. As he did not have much money, he used what he had as a deposit on the rights to the local olive presses; due to no competition he secured this at a relatively low price. When the harvest proved to be bountiful leading to high demand, Thales charged a high price for use of the presses and reaped a considerable profit. His deposit gave him the right but not the obligation to hire the presses, thus his losses were limited to his initial deposit~\cite{OptionFirst, 1877aristotle}.
 \nline{}
-Whilst this is quite a positive look on option trading, throughout history this has not always been the case. During the Dutch tulip bubble of the seventeenth century, tulips were seen as a status symbols which caused high demand and consequently drove their prices up, creating a bubble \cite{dash2011tulipomania}. Tulip growers would buy puts to protect their profits in case the price of tulip bulbs went down and wholesalers would buy calls to protect against the risk of tulip bulbs going up. When the bubble eventually burst, there was no way to force investors to fulfil their obligations of the options contracts, due to the unregulated nature of the option market. This ultimately led to options gaining a dubious reputation and bans were later placed on them within Britain between 1733--1860 \cite{OptionBan}. 
+Whilst this is quite a positive look on option trading, throughout history this has not always been the case. During the Dutch tulip bubble of the seventeenth century, tulips were seen as a status symbols which caused high demand and consequently drove their prices up, creating a bubble~\cite{dash2011tulipomania}. Tulip growers would buy puts to protect their profits in case the price of tulip bulbs went down and wholesalers would buy calls to protect against the risk of tulip bulbs going up. When the bubble eventually burst, there was no way to force investors to fulfil their obligations of the options contracts, due to the unregulated nature of the option market. This ultimately led to options gaining a dubious reputation and bans were later placed on them within Britain between 1733--1860~\cite{OptionBan}. 
 \nline{}
-During the late nineteenth century, brokers started to arrange deals between buyers and sellers of options for particular stocks at prices that were arranged between the two parties. Trades were arranged similarly until the 1960s when the options market started to become regulated by the Chicago Board of Trade. In 1973, the Chicago Board of Options Exchange (CBOE) began trading and for the first time options contracts were properly standardized. At the same time, the Options Clearing Corporation was established for centralized clearing and enforcing the proper fulfillment of contracts, ensuring that they were honored \cite{markham2002financial}.
+During the late nineteenth century, brokers started to arrange deals between buyers and sellers of options for particular stocks at prices that were arranged between the two parties. Trades were arranged similarly until the 1960s when the options market started to become regulated by the Chicago Board of Trade. In 1973, the Chicago Board of Options Exchange (CBOE) began trading and for the first time options contracts were properly standardized. At the same time, the Options Clearing Corporation was established for centralized clearing and enforcing the proper fulfillment of contracts, ensuring that they were honored~\cite{markham2002financial}.
 
 \subsection{Standard options}
 
@@ -46,17 +44,17 @@ We define our two classes of assets with the following assumptions:
 
 \subsubsection{Risk-free assets}
 
-Risk-free assets are assumed to have no uncertainty in regard to their future value and defined as returning interest continuously compounded at a fixed rate \(r\). Hence, an investment of \(A\) made at time \(t\) will return \(A^{r\left(T-t\right)}\) at time \(T>t\) with no uncertainty. These can be positive e.g., making an investment, or negative e.g., taking out a loan. Risk-free assets are akin to fixed rate investments at a well-know bank or government bonds. However, even sovereign nations have been known to default on their bond repayments so in reality are not truly risk-free, but instead considered low-risk \cite{kitanov2015risk}.
+Risk-free assets are assumed to have no uncertainty in regard to their future value and defined as returning interest continuously compounded at a fixed rate \(r\). Hence, an investment of \(A\) made at time \(t\) will return \(A^{r\left(T-t\right)}\) at time \(T>t\) with no uncertainty. These can be positive e.g., making an investment, or negative e.g., taking out a loan. Risk-free assets are akin to fixed rate investments at a well-know bank or government bonds. However, even sovereign nations have been known to default on their bond repayments so in reality are not truly risk-free, but instead considered low-risk~\cite{kitanov2015risk}.
 
 \subsubsection{Risky assets}
 
-Risky assets are assets in which the future value can not be determined without at least some uncertainty. These are typically shares in a company or commodities such as gold and oil. These assets are traded on the open market and their value is heavily dependent on the balance of supply and demand of the asset; this in turn is dependent on so many variables that we assume their future value to be a random process. Depending on our model we can make different assumptions on the distribution of this process and thus how the value evolves over a time period. In practice there are people who argue that future value of risky assets are truly random \cite{RandomWalkFama}, whilst others believe they can be at least partly deterministic where patterns and trends exists \cite{shiller}.
+Risky assets are assets in which the future value can not be determined without at least some uncertainty. These are typically shares in a company or commodities such as gold and oil. These assets are traded on the open market and their value is heavily dependent on the balance of supply and demand of the asset; this in turn is dependent on so many variables that we assume their future value to be a random process. Depending on our model we can make different assumptions on the distribution of this process and thus how the value evolves over a time period. In practice there are people who argue that future value of risky assets are truly random~\cite{RandomWalkFama}, whilst others believe they can be at least partly deterministic where patterns and trends exists~\cite{shiller}.
 
 \subsection{Market Assumptions}
 
 We shall assume that an investor may hold any quantity (including negative and/or fractional) of an asset, known as the \textit{divisibility} and \textit{short-selling} assumption. We will also assume that our market is \textit{frictionless} --- that is that any quantity of assets can be bought and sold at the same price with no transaction cost and are entirely \textit{liquid} meaning there is always a buyer for every seller and vice versa.
 \nline{}
-In practice these assumptions do not accurately represent real markets, for example it is common place for markets to have bid-ask spreads which represents the different in price at which you can buy and sell assets for. Furthermore, transaction costs are impossible to fully eliminate --- even in scenarios with no tax or commission fees, buying or selling assets (especially in large quantities) will in theory have an effect on the supply and demand of that asset; this introduces market impact costs \cite{moro2009market}. There are other transaction fees to also consider such as: time spent deciding what assets to buy, computing power costs and their associated opportunity costs.
+In practice these assumptions do not accurately represent real markets, for example it is common place for markets to have bid-ask spreads which represents the different in price at which you can buy and sell assets for. Furthermore, transaction costs are impossible to fully eliminate --- even in scenarios with no tax or commission fees, buying or selling assets (especially in large quantities) will in theory have an effect on the supply and demand of that asset; this introduces market impact costs~\cite{moro2009market}. There are other transaction fees to also consider such as: time spent deciding what assets to buy, computing power costs and their associated opportunity costs.
 
 \subsubsection{No-Arbitrage assumption}
 
@@ -66,17 +64,30 @@ Perhaps our most important market assumption is the No-Arbitrage principle; some
 
 Having now established our market assumptions, we must now define our assumptions on the random process which describes how the asset value may evolve over a specified time period. We will first introduce the mathematical concepts in which these models are built upon. Then we will introduce a simple asset model and one which has more assumptions in hopes of better describing the future asset value in practice.
 
-\subsection{Statistical concepts}
-
-We begin this section by defining what a stochastic process is and how they are applicable to modelling our asset value.
-
 \subsubsection{Stochastic processes}
 
-A stochastic process is defined as a collection of random variables defined on a common probability space \((\Omega ,\mathcal{F},P)\), where \(\Omega\)  is a sample space, \(\mathcal{F}\) is a \(\sigma\)-algebra, and \(P\) is a probability measure; and the random variables, indexed by some set \(T\), all take values in the same mathematical space \(S\), which must be measurable with respect to some \(\sigma\)-algebra \(\Sigma\) \cite{lamperti1977stochastic}.
+A stochastic process is defined as a collection of random variables defined on a common probability space \( (\Omega ,\mathcal{F},P) \), where \( \Omega \)  is a sample space, \( \mathcal{F} \) is a \( \sigma \)-algebra, and \( P \) is a probability measure; and the random variables, indexed by some set \( T \), all take values in the same mathematical space \(S\), which must be measurable with respect to some \( \sigma \)-algebra \( \Sigma \)~\cite{lamperti1977stochastic}.
 \nline{}
-A discrete stochastic process is a sequence of random variables which represent observations taken at discrete times, e.g. \(\{X_i\,:\, i \in \}\) being 
+A discrete stochastic process is a sequence of random variables which represent observations taken at discrete times from a random system, e.g.\ observations \( \{X_i\,:\, i \in \nat_{[0,n]}\} \) at times \( t = t_0,t_1,\,\dots \,t_n \). We now let our market be the random system and our observations, \( X_i \) be the value of our asset observed on the \( i^\text{th}\) day. 
 
 \subsection{Random-walk model}
+
+A random walk is a type of stochastic process that describes a path in which at every movement forward in time the movement in space is decided by a random process. For example, in the 2 dimension case, we could construct a path in which for every time step forward we flip a fair coin to decide if we move up or down. We let \( S_i \) be our position of the path at time \(t = t_i\) and \(Y_i\) be the result of our coin toss, where \(Y_i = 1\) if we get heads and \(Y_i = 01\) if we get tails. We can write this mathematically as:
+
+\begin{align*}
+    S_0 &= 0 \\
+    S_n &= S_{n-1} + Y_i
+\end{align*}
+
+Where \(Y_i\) are identically independently distributed (i.d.d.):
+
+\begin{equation*}
+    Y_i = 
+    \begin{cases}
+       1& \quad \text{with } P(y_i = \text{heads}) = \frac{1}{2} \\
+       -1& \quad \text{with } P(y_i = \text{tails}) = \frac{1}{2}
+    \end{cases}
+\end{equation*}
 
 \subsection{Better model}
 
