@@ -48,7 +48,7 @@ Risk-free assets are assumed to have no uncertainty in regard to their future va
 
 \subsubsection{Risky assets}
 
-Risky assets are assets in which the future value can not be determined without at least some uncertainty. These are typically shares in a company or commodities such as gold and oil. These assets are traded on the open market and their value is heavily dependent on the balance of supply and demand of the asset; this in turn is dependent on so many variables that we assume their future value to be a random process. Depending on our model we can make different assumptions on the distribution of this process and thus how the value evolves over a time period. In practice there are people who argue that future value of risky assets are truly random~\cite{RandomWalkFama}, whilst others believe they can be at least partly deterministic where patterns and trends exists~\cite{shiller}.
+Risky assets are assets in which the future value can not be determined without at least some uncertainty. These are typically shares in a company or commodities such as gold and oil. These assets are traded on the open market and their value is heavily dependent on the balance of supply and demand of the asset; this in turn is dependent on so many variables that we assume their future value to be a random process. Depending on our model we can make different assumptions on the distribution of this process and thus how the value evolves over a time period. In practice has been arguments made for the future value of risky assets are truly random~\cite{RandomWalkFama}, and other arguments that they are instead at least partly deterministic where patterns and trends exists~\cite{shiller}.
 
 \subsection{Market Assumptions}
 
@@ -72,20 +72,30 @@ A discrete stochastic process is a sequence of random variables which represent 
 
 \subsection{Random-walk model}
 
-A random walk is a type of stochastic process that describes a path in which at every movement forward in time the movement in space is decided by a random process. For example, in the 2 dimension case, we could construct a path in which for every time step forward we flip a fair coin to decide if we move up or down. We let \( S_i \) be our position of the path at time \(t = t_i\) and \(Y_i\) be the result of our coin toss, where \(Y_i = 1\) if we get heads and \(Y_i = 01\) if we get tails. We can write this mathematically as:
+A random walk is a type of stochastic process that describes a path in which at every movement forward in time the movement in space is decided by a random process. For example, in the 2 dimension case, we can construct a path in which we start at the 0 and for every time step forward we flip a fair coin to decide if we move up or down. We let \( S_i \) be our position of the path at time \(t = t_i\) and \(y_i\) be the result of our \(i^\text{th}\) coin toss and \(Y_i\) be how the toss effects our path; where \(Y_i = 1\) if \( y_i = \text{heads} \) and \(Y_i = -1\) if \(y_i = \text{tails}\). If we were to plot our path it would look something like;
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{Chapters/C1/plots/RW_Simulations.png}
+    \caption{Five simulations of a symmetric random walk, with no drift. Source code: \autoref{ApPy:SymRW}}\label{C1fig:OptionVolume}
+\end{figure}
+
+\subsubsection{The general case}
+
+It follows that we can construct a random walk for the general case we may change the probabilities, the size of the step taken and also introduce a drift parameter. This is written as follows:
 
 \begin{align*}
-    S_0 &= 0 \\
-    S_n &= S_{n-1} + Y_i
+    S_0 &= S_0 \\
+    S_n &= S_{n-1} + \mu + \sigma Y_i
 \end{align*}
 
-Where \(Y_i\) are identically independently distributed (i.d.d.):
+Where \(Y_i\) are identically and independently distributed (i.d.d.):
 
 \begin{equation*}
     Y_i = 
     \begin{cases}
-       1& \quad \text{with } P(y_i = \text{heads}) = \frac{1}{2} \\
-       -1& \quad \text{with } P(y_i = \text{tails}) = \frac{1}{2}
+       \alpha& \quad \text{with } P(Y_i = \alpha) = p; \\
+       \beta& \quad \text{with } P(Y_i = \beta) = (1-p)
     \end{cases}
 \end{equation*}
 
@@ -94,8 +104,6 @@ Where \(Y_i\) are identically independently distributed (i.d.d.):
 \begin{equation}
     \frac{S_{n+1} - S_n}{S_n} = \mu\delta t + \sigma\sqrt[]{\delta t}Y_{n+1}
 \end{equation}
-
-\
 
 \section{Pricing options}
 
