@@ -8,7 +8,7 @@ It is this explosive popularity and significance which have motivated this repor
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.65\textwidth]{Chapters/C1/plots/OptionVolume.png}
-    \caption{Time series plot of the average daily option trading volume per annum. Data provided by the Options Clearing Corporation (OCC)~\cite{THEOCC}. Source code: \autoref{ApPy:lst option volume plot}}\label{C1fig:OptionVolume}
+    \caption{Time series plot of the average daily option trading volume per annum. Data provided by the Options Clearing Corporation (OCC)~\cite{THEOCC}. Source code: \autoref{ApPy:lst option volume plot}}\label{C1fig:SymRw}
 \end{figure}
 
 \section{A brief overview of call and put options}
@@ -48,7 +48,7 @@ Risk-free assets are assumed to have no uncertainty in regard to their future va
 
 \subsubsection{Risky assets}
 
-Risky assets are assets in which the future value can not be determined without at least some uncertainty. These are typically shares in a company or commodities such as gold and oil. These assets are traded on the open market and their value is heavily dependent on the balance of supply and demand of the asset; this in turn is dependent on so many variables that we assume their future value to be a random process. Depending on our model we can make different assumptions on the distribution of this process and thus how the value evolves over a time period. In practice has been arguments made for the future value of risky assets are truly random~\cite{RandomWalkFama}, and other arguments that they are instead at least partly deterministic where patterns and trends exists~\cite{shiller}.
+Risky assets are assets in which the future value can not be determined without at least some uncertainty. These are typically shares in a company or commodities such as gold and oil. These assets are traded on the open market and their value is heavily dependent on the balance of supply and demand of the asset; this in turn is dependent on so many variables that we assume their future value to be a random process. Depending on our model we can make different assumptions on the distribution of this process and thus how the value evolves over a time period. In practice has been arguments made for the future value of risky assets are truly random~\cite{RandomWalkFama}, and other arguments that propose they are instead at least partly deterministic where patterns and trends exists~\cite{shiller}.
 
 \subsection{Market Assumptions}
 
@@ -72,7 +72,7 @@ A discrete stochastic process is a sequence of random variables which represent 
 
 \subsection{Random-walk model}
 
-A random walk is a type of stochastic process that describes a path in which at every movement forward in time the movement in space is decided by a random process. For example, in the 2 dimension case, we can construct a path in which we start at the 0 and for every time step forward we flip a fair coin to decide if we move up or down. We let \( S_i \) be our position of the path at time \(t = t_i\) and \(y_i\) be the result of our \(i^\text{th}\) coin toss and \(Y_i\) be how the toss effects our path; where \(Y_i = 1\) if \( y_i = \text{heads} \) and \(Y_i = -1\) if \(y_i = \text{tails}\). If we were to plot our path it would look something like;
+A random walk is a type of stochastic process that describes a path in which at every movement forward in time the movement in space is decided by a random process. A simple 2 dimension case for example: we construct a path in which we start at the 0 and for every time step forward we flip a fair coin to decide if we move up or down. We let \( S_i \) be our position of the path at time \(t = t_i\) and \(y_i\) be the result of our \(i^\text{th}\) coin toss and \(Y_i\) be how the toss effects our path; where \(Y_i = 1\) if \( y_i = \text{heads} \) and \(Y_i = -1\) if \(y_i = \text{tails}\). This random walk is called symmetric as it goes up or down by the same amount. If we were to plot our path it would look something like;
 
 \begin{figure}[H]
     \centering
@@ -82,7 +82,7 @@ A random walk is a type of stochastic process that describes a path in which at 
 
 \subsubsection{The general case}
 
-It follows that we can construct a random walk for the general case we may change the probabilities, the size of the step taken and also introduce a drift parameter. This is written as follows:
+It follows that we can construct a random walk for the general case where we may change the probabilities, the size of the step taken and also introduce a drift parameter. This is written as follows:
 
 \begin{align*}
     S_0 &= S_0 \\
@@ -98,6 +98,12 @@ Where \(Y_i\) are identically and independently distributed (i.d.d.):
        \beta& \quad \text{with } P(Y_i = \beta) = (1-p)
     \end{cases}
 \end{equation*}
+
+Here \(\mu \) is the drift and \(\sigma \) scales the movement.
+
+\subsubsection{Drawbacks of random walk as an asset model}
+
+We can begin to see how path this may reflect the price an asset which future value is determined by a random event. However, this model comes with several drawbacks: This model only permits the price of the asset to go down by a fixed amount, further to this point the amount is detached from the current value of the asset; we may instead expect that value change would be proportional to the current value. Lastly, the random walk model also allows asset prices to go negative which is typically considered impossible. It is worth noting that during April 2020, oil futures reached negative value for the first time in recorded history~\cite{NegativeOil}.
 
 \subsection{Better model}
 
