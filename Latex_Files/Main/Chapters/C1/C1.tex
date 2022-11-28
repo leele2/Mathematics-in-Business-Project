@@ -8,7 +8,7 @@ It is this explosive popularity and significance which have motivated this repor
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.65\textwidth]{Chapters/C1/plots/OptionVolume.png}
-    \caption{Time series plot of the average daily option trading volume per annum. Data provided by the Options Clearing Corporation (OCC)~\cite{THEOCC}. Source code: \autoref{ApPy:lst option volume plot}}\label{C1fig:SymRw}
+    \caption{Time series plot of the average daily option trading volume per annum. Data from by the Options Clearing Corporation (OCC)~\cite{THEOCC}. Source code: \autoref{ApPy:lst option volume plot}}\label{C1fig:SymRw}
 \end{figure}
 
 \section{A brief overview of call and put options}
@@ -103,7 +103,7 @@ Here \(\mu \) is the drift and \(\sigma \) scales the movement.
 
 \subsubsection{Drawbacks of random walk as an asset model}
 
-We can begin to see how path this may reflect the price an asset which future value is determined by a random event. However, this model comes with several drawbacks: This model only permits the price of the asset to go down by a fixed amount, further to this point the amount is detached from the current value of the asset; we may instead expect that value change would be proportional to the current value. Lastly, the random walk model also allows asset prices to go negative which is typically considered impossible. It is worth noting that during April 2020, oil futures reached negative value for the first time in recorded history~\cite{NegativeOil}.
+We can begin to see how path this may reflect the price an asset which future value is determined by a random event. However, this model comes with several drawbacks: This model only permits the price of the asset to go down by a fixed amount, further to this point the amount is detached from the current value of the asset; we may instead expect that value change would be proportional to the current value. Lastly, the random walk model also allows asset prices to go negative which is typically considered impossible. It is worth noting that during April 2020, oil futures reached negative values history~\cite{NegativeOil}. An alternative approach instead applies the random walk model to rate of return, which of course can often be negative.
 
 \subsection{Better model}
 
