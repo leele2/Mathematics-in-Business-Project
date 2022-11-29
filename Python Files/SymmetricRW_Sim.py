@@ -5,9 +5,7 @@ Created on Sat Nov 19 17:11:24 2022
 @author: leele2
 """
 import pandas as pd
-import matplotlib as mpl
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
 from pathlib import Path
 from scipy.stats import binom
 
@@ -37,7 +35,7 @@ fig, ax1 = plt.subplots()
 plt.gcf().set_size_inches(6, 4.5)
 for i in range(1, N + 1):
     ax1.plot(sim[i], linewidth=2)
-ax1.set_title('Five Symetric Random Walk Simulation')
+ax1.set_title('Five Symetric Random Walk Simulations')
 ax1.set_xlabel('$n$')
 ax1.set_ylabel('$S_n$')
 plt.tight_layout()
