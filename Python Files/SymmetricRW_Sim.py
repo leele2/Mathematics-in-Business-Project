@@ -4,7 +4,6 @@ Created on Sat Nov 19 17:11:24 2022
 
 @author: leele2
 """
-import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
 from scipy.stats import binom

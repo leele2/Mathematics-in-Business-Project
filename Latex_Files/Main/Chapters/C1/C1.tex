@@ -75,7 +75,7 @@ A discrete stochastic process is a sequence of random variables which represent 
 
 \subsubsection{Brownian Motion (Wiener Process)}
 
-Brownian motion is a pattern of motion first described by the botanist Robert Brown in 1827 when observing pollen of a plant through a microscope~\cite{pearle2010brown}. The motion typically consists of random fluctuations in a particle's position inside a subdomain, followed by relocation to another subdomain. This motion has applications in many fields of study such as pure and applied mathematics, economics and physics. In mathematics, Brownian motion is described by the Wiener Process.
+Brownian motion is a pattern of motion first described by the botanist Robert Brown in 1827 when observing pollen of a plant through a microscope~\cite{pearle2010brown}. The motion typically consists of random fluctuations in a particle's position inside a subdomain, followed by relocation to another subdomain. This motion has applications in many fields of study such as pure and applied mathematics, economics and physics. In statistics, Brownian motion is described by the Wiener Process.
 \nline{}
 A Wiener process, \( \wei_t \) is a continuous-time stochastic process named after Norbert Wiener for his study into the mathematical properties of one-dimension Brownian motion~\cite{wiener1976norbert}; it is characterized by the following properties~\cite{durrett2019probability}:
 
@@ -88,9 +88,13 @@ A Wiener process, \( \wei_t \) is a continuous-time stochastic process named aft
 
 \subsubsection{Asset Prices as Brownian Motion}
 
-The French mathematician Louis Bachelier is often attributed to pioneering using Brownian motion to model asset prices when he did so in his PhD thesis “The Theory of Speculation'' (1900)~\cite{bachelier2011louis}. However, a lesser known French stockbroker's assistant Jules Renault was first to do so in his 1863 publication“calcul des chances et philosophie de la bourse''~\cite{regnault1863calcul}.
+The French mathematician Louis Bachelier is often attributed to pioneering using Brownian motion to model asset prices when he did so in his PhD thesis “The Theory of Speculation'' (1900)~\cite{Bachelier+2007}. However, a lesser known French economist Jules Renault was first to do so in his 1863 publication “calcul des chances et philosophie de la bourse''~\cite{RegnaultFirst}.
 \nline{}
-Regnault hypothesized that asset prices change according to a random walk (discussed further in \autoref{subsec: RW model}), in his book he wrote ``the deviation of prices is directly proportional to the square root of time'' this is a result we would expect to see from a Weiner process (\autoref{Weiner process Gaussian increments}). Bachelier than expanded on this hypothesis 
+Regnault hypothesized that asset prices change according to a symmetric random walk (discussed further in \autoref{subsec: RW model}), in his book he constructed a model which treated future prices as a game of ``heads or tails'':
+\begin{quotation}
+    ``On the stock market, the whole mechanism of the game comes down to two opposite possibilities: increasing and decreasing. Each one can always appear with an equal facility'' \hfill{}\nolinebreak\cite{regnault1863calcul,RegnaultFirst}
+\end{quotation}
+He would go on to claim ``the deviation of prices is directly proportional to the square root of time'' this is a result we would expect to see from a Weiner process (\autoref{Weiner process Gaussian increments}). Fast-forward to 1900 and Bachelier would conduct a study on French government bonds, concluding that their price changes were consistent with a random walk model; furthermore, Bachelier would go on to formulate many of the mathematical properties of the stochastic process now known as Brownian motion~\cite{Bachelier+2007}. Bachelier's contribution went largely unnoticed until the 1950s
 
 \subsection{Random-walk model}\label{subsec: RW model}
 
