@@ -73,6 +73,10 @@ A stochastic process is defined as a collection of random variables defined on a
 \nline{}
 A discrete stochastic process is a sequence of random variables which represent observations taken at discrete times from a random system, e.g.\ observations \( \{X_i\,:\, i \in \nat_{[0,n]}\} \) at times \( t = t_0,t_1,\,\dots \,t_n \). We can let our market be the random system and our observations, \( X_i \) be the value of our asset observed on the \( i^\text{th}\) day. This is a typical example of structuring an asset market as a discrete stochastic process; we will later see how this is helpful for building our asset pricing models.
 
+\subsubsection{Markov Process}
+
+Maybe insert a little bit of text explaining markov processes, add to brownian motion section that it is a form of markov process.
+
 \subsubsection{Brownian Motion (Wiener Process)}
 
 Brownian motion is a pattern of motion first described by the botanist Robert Brown in 1827 when observing the unpredictable motion of pollen of a plant through a microscope~\cite{pearle2010brown}. The motion typically consists of random fluctuations in a particle's position inside a subdomain, followed by relocation to another subdomain. This motion has applications in many fields of study such as pure and applied mathematics, economics and physics. In statistics, Brownian motion is described by the Wiener Process.
@@ -94,18 +98,18 @@ Regnault hypothesized that asset prices change according to a game of ``heads or
 \begin{quotation}
     ``On the stock market, the whole mechanism of the game comes down to two opposite possibilities: increasing and decreasing. Each one can always appear with an equal facility'' \hfill{}\nolinebreak\cite{regnault1863calcul,RegnaultFirst}
 \end{quotation}
-He also claimed ``the deviation of prices is directly proportional to the square root of time'' this is a result we would expect to see from a Weiner process (\autoref{Weiner process Gaussian increments}). Fast-forward to 1900 and Bachelier further developed the theory of asset prices moving according to a random process, his ideas depended on markets being efficient. Bachelier theorized in his thesis that as soon as prices becomes predictable, it immediately becomes exploited. However, he believed all traders to have access to all available information which leads to these predictable patterns instantly disappearing. Bachelier believed prices took what we now call ``random walks'' above and below their true value, as competing traders attempt to beat the market. He would go on to conduct a study on French government bonds, concluding that their price changes were consistent with a random walk model; furthermore, Bachelier would formulate many of the mathematical properties of the stochastic process now known as Brownian motion~\cite{Bachelier+2007}.
+He also claimed ``the deviation of prices is directly proportional to the square root of time'' this is a result we would expect to see from a Weiner process (\autoref{Weiner process Gaussian increments}). Fast-forward to 1900 and Bachelier further developed the theory of asset prices moving according to a random process; his ideas depended on markets being efficient. Bachelier theorized in his thesis that as soon as prices becomes predictable, it immediately becomes exploited. However, he believed all traders to have access to all available information which leads to these predictable patterns instantly disappearing. Bachelier believed prices took what we now call ``random walks'' above and below their true value, as competing traders attempt to beat the market. He would go on to conduct a study on French government bonds, concluding that their price changes were consistent with a random walk model; furthermore, Bachelier would formulate many of the mathematical properties of the stochastic process now known as Brownian motion~\cite{Bachelier+2007}.
 \nline{}
-These contributions by Bachelier went largely unnoticed until the mid 20th century when several historic publications formalized and furthered Random-Walk and Efficient-Market Hypothesis~\cite{Maurice_Kendall_RandomWalk, cootner1964random, RandomWalkFama} 
+These contributions by Bachelier went largely unnoticed until the mid 20th century when several historic publications formalized and furthered the theory surrounding the Random-Walk and Efficient-Market Hypothesis~\cite{Maurice_Kendall_RandomWalk, cootner1964random, RandomWalkFama}. These hypotheses were heavily studied throughout the 20th century and pathed the way for many advances in mathematical finance. Over the decades there has been mixed evidence to support the hypothesis that markets can not be predicted. More recently studies have shown that market predictability has become more difficult due to advances in trading technology and investor learning~\cite{welch2008comprehensive,mclean2016does}. However, for our market and asset assumptions, and our ultimate goal of implementing pricing models for financial options; random walk and Brownian motion models are sufficient.
 \subsection{Random-walk model}\label{subsec: RW model}
 
-A random walk is a type of stochastic process that describes a path in which at every movement forward in time the movement in space is decided by a random process. A simple 2 dimension case for example; we construct a path in which we start at 0 and for every time step forward, we flip a fair coin to decide if we move up or down. We let \( S_i \) be our position of the path at time \( t = t_i \) and \(y_i\) be the result of our \( i^\text{th} \) coin toss and \( Y_i \) be how the toss effects our path; where \( Y_i = 1 \) if \( y_i = \text{heads} \) and \(Y_i = -1\) if \( y_i = \text{tails} \). This random walk is called symmetric as it goes up or down by the same amount. If we were to plot our path it would look something like:
-
-\begin{figure}[H]
+\begin{figure}[]
     \centering
     \includegraphics[width=\sOneSize\textwidth]{Chapters/C1/plots/RW_Simulations.png}
-    \caption{Five simulations of a symmetric random walk, with no drift. Source code: \autoref{ApPy:SymRW}}\label{C1fig:OptionVolume}
+    \caption{Five simulations of a symmetric random walk with probability \(p = 0.5\) and no drift. Source code: \autoref{ApPy:SymRW}}\label{C1fig:OptionVolume}
 \end{figure}
+
+A random walk is a type of stochastic process that describes a path in which at every movement forward in time the movement in space is decided by a random process. A simple 2 dimension case for example; we construct a path in which we start at 0 and for every time step forward, we flip a fair coin to decide if we move up or down. We let \( S_i \) be our position of the path at time \( t = t_i \) and \(y_i\) be the result of our \( i^\text{th} \) coin toss and \( Y_i \) be how the toss effects our path; where \( Y_i = 1 \) if \( y_i = \text{heads} \) and \(Y_i = -1\) if \( y_i = \text{tails} \). This random walk is called symmetric as it goes up or down by the same amount. If we were to plot our path it would look something like:
 
 \subsubsection{The general case}
 
@@ -116,7 +120,7 @@ It follows that we can construct a random walk for the general case where we may
     S_n &= S_{n-1} + \mu + \sigma Y_i
 \end{align*}
 
-Where \(Y_i\) are identically and independently distributed (i.d.d.):
+Where \(\mu \) is the drift, \(\sigma \) scales the movement and \(Y_i\) are identically and independently distributed (i.d.d.):
 
 \begin{equation*}
     Y_i = 
@@ -126,16 +130,20 @@ Where \(Y_i\) are identically and independently distributed (i.d.d.):
     \end{cases}
 \end{equation*}
 
-Here \(\mu \) is the drift and \(\sigma \) scales the movement.
+We let \(S_i \) be the price of an asset on the \(i^{\text{th}}\) day, thus \(S_0\) is the current price of the asset. The drift in terms of an asset model allows us to model in the expected increase/decrease in price of the asset, where scale allows us to model the volatility (the magnitude of movements). There are different methods in which we could employ to calculate our drift and scale parameters, this will typically involve using historical data but can extend to take into account speculation about the underlying asset.
 
-\subsubsection{Drawbacks of a random walk as an asset model}
+\subsubsection{Drawbacks of a random walk to model asset prices}
 
-We can begin to see how path this may reflect the price an asset which future value is determined by a random event. However, this model comes with several drawbacks: This model only permits the price of the asset to go down by a fixed amount, further to this point the amount is detached from the current value of the asset; we may instead expect that value change would be proportional to the current value. Lastly, the random walk model also allows asset prices to go negative which historically was considered impossible. However, it is worth noting that during April 2020, oil futures became sharply negative for the first time in history~\cite{NegativeOil}. An alternative approach instead applies the random walk model to rate of return instead of asset value, which of course can often be negative.
+We can begin to see how this path may reflect the price an asset which future value is determined by a random event. However, this model comes with several drawbacks: This model only permits the price of the asset to go up and down by a fixed amount, further to this point, the amount is detached from the current value of the asset; we may instead expect that the value change would be proportional to the current value. Lastly, the random walk model also allows asset prices to go negative which typically is considered impossible. However, during April 2020, oil futures became sharply negative for the first time in history~\cite{NegativeOil}. This has lead to people to reconsider the random walk model and see this instead as a positive in specific circumstances. An alternative approach instead applies the random walk model to rate of return instead of asset value, which of course can often be negative.
 
-\subsection{Better model}
+\subsection{Geometric Brownian model}
 
-\begin{equation}
-    \frac{S_{n+1} - S_n}{S_n} = \mu\delta t + \sigma\sqrt[]{\delta t}Y_{n+1}
+A better alternative is the geometric Brownian model, shown in \autoref{eqn: Geo Brownian Motion}. This model addresses the drawbacks of the simple random walk model. First, we can see that the left-hand side of the equation is the percentage increase from the previous time to the current time. This means our price change is not detached from the previous value and the absolute value can never become negative.
+\nline{}
+We introduce a new term, \(\delta t\), this is taken to be a fixed time interval which is comparatively small to the time interval \(t \in [0,T]\); where \(t = T\) is the final time of the model. We now let the price of the asset, \(S_i = S(i)\) no longer be measured on the \(i^{\text{th}}\) day, but instead the \(i^{\text{th}}\) number of the time interval \(\delta t\). It is common to calculate \(\delta t\) by considering your entire time range, \(t\in[0,T]\) and splitting this range into \(N\) \(\delta t\) increments, where \(N\) is some large number; hence \(S_{N} = S\p{N\delta t = T} = S_T\). Now, if we were to consider a drift parameter \(\mu \) which represents the expected price increase in one unit of time, it would follow that the increase over our time increment \(\delta t\) would be \(\delta t \mu \). The variance (volatility) of the percentage increase at the final, \(N^{\text{th}}\) step would be \(N\) times the variance at each time interval step, so we would expect this variance to be proportional to \(\delta t\).
+
+\begin{equation}\label{eqn: Geo Brownian Motion}
+    \frac{S_{n+1} - S_n}{S_n} = \delta t\mu + \sqrt{\delta t}\sigma Y_{n+1}
 \end{equation}
 
 \section{Pricing options}
@@ -158,4 +166,4 @@ Since the holder of the contract is not obliged to exercise the contract at the 
 
 \subsubsection{Analytical solution for geometric average Asian options}
 
-\subsection{Monte-Carlo method}
+\subsection{Monte-Carlo method}=
