@@ -273,7 +273,7 @@ We may be surprised to see an extra term in the mean of our normal distribution 
 \nline{}
 Our limiting continuous time expression for our asset model, using either a modified Bernoulli or normally distributed \(Y_i\) (or any distribution centred zero, variance equal to 1 and finite second moment) becomes:
 
-\begin{equation}
+\begin{equation}\label{eqn:c1:S(T)}
     S(T) = S_0\exp^{\p{\mu-\frac{1}{2}}T+\sigma\sqrt{T}Z},\quad\text{Where \(Z\sim\norm\p{0,1}. \)}
 \end{equation}
 
@@ -293,7 +293,7 @@ Which is independent of \(\log\p{\frac{S(j\delta t)}{S(i\delta t)}}\).
 \nline{}
 Thus, we can describe our asset price modelled by our geometric Brownian motion over any sequence of time points using the following equation:
 
-\begin{equation}
+\begin{equation}\label{eqn:c1:geobrown model}
     S_{n+1} = S_n\exp^{\p{\mu-\frac{1}{2}\sigma^2}\p{\delta t} + \sigma\sqrt{\delta t}Z_i}, \quad \text{With i.i.d.~} Z_i \sim \norm\p{0,1}.
 \end{equation}
 
@@ -304,6 +304,110 @@ The above is an important derivation to know when deciding how to correctly choo
 \section{Pricing standard options}
 
 Since the holder of the contract is not obliged to exercise the contract at the expiry time, they do not hold any liability in the absence of a price to purchase the option. The problem then becomes, what is the correct price to charge the holder of the option to balance this inequality of liability.
+
+\subsection{Black-Scholes Model}
+
+\begin{equation}\label{eqn:BS}
+    \frac{\partial \pof}{\partial t} + \frac{1}{2}\sigma^2S^2\frac{\partial^2\pof}{\partial S^2} + rS\frac{\partial \pof}{\partial S} - r\pof = 0
+\end{equation}
+
+The Black Scholes Equation is a partial differential equation developed by two economists, Fisher Black and Myron Scholes. This equation shows the value of an option as a function of time and underlying asset value. Thus, solving this equation with an appropriately chosen boundary conditions you can in some cases find an analytical solution to price an option. Most famously, Black and Scholes showed that with a change of variables transformation, it was possible to transform the Black-Scholes equation for a European put or call option into the commonly solved heat equation. Upon solving and transforming the variables back, they had provided an analytical solution for a European put and call option.
+
+\subsection{Deriving the Black-Scholes equation}
+
+The following derivation is taken from an unpublished report~\cite{Yr2Project}, which follows works from Hull~\cite{hull2012options} which is in turn is based on the classic argument given in the original Black-Scholes paper~\cite{black1973pricing}. To derive the Black-Scholes Equation we must first make three assumptions about the price of an option.
+
+\begin{enumerate}
+    \item The stock price follows a stochastic process, meaning that we can not use historical price to predict its future movement.
+    \item The option pays no dividends to the owner.
+    \item Risk-free rate, \(r\) and percentage volatility, \(\sigma \) are known and constant.
+\end{enumerate}
+
+We again assume that the price of an asset follows a geometric Brownian motion. However, we instead opt for the continuous form, that is:
+
+\begin{equation}\label{Brownian}
+    \frac{dS}{S} = \mu dt + \sigma dW
+\end{equation}
+
+Where \(W\) is a stochastic variable (Brownian motion). Note that \(W \), and consequently its infinitesimal increment \(dW \), represents the only source of uncertainty.
+
+The payoff of an option \(\pof(S,t) \) at the exercise date, \(t = T\) is known. To find the value of the option at an earlier time, we need to know how \(\pof \) changes as a function of \(S \) and \(t \).
+
+As we have assumed \(\pof(S,t) \) is a stochastic process and also dependent on time we can find the differential of \(\pof \) using Itō's lemma. 
+
+By Itō's lemma for two variables we have:
+
+\begin{equation}\label{Ito}
+    d\pof = \bigg( \mu S \frac{\partial \pof}{\partial S} + \frac{\partial \pof}{t} + \frac{1}{2}\sigma^2 S^2 \frac{\partial^2 \pof}{\partial S^2}\bigg)dt + \sigma S \frac{\partial \pof}{\partial S}dW
+\end{equation}
+
+Now, consider a specific portfolio, the delta-hedge portfolio, consisting of the negative value of the option and \(\frac{\partial \pof}{\partial S} \) shares at time \(t \). The value of the portfolio is then:
+
+\begin{equation*}
+    \Pi = -\pof + \frac{\partial \pof}{\partial S}S
+\end{equation*}
+
+Over a given time period, the total profit or loss from changes in the values of the holdings (the option and shares) is
+
+\begin{equation}\label{deltahedge}
+    \Delta \Pi = -\Delta \pof + \frac{\partial \pof}{\partial S}\Delta S
+\end{equation}
+
+Now discretizing equations~\eqref{Brownian} and~\eqref{Ito}:
+
+\begin{align*}
+    \Delta S &= \mu S \Delta t + \sigma S \Delta W , & \Delta \pof = \bigg(\mu S \frac{\partial \pof}{\partial S} + \frac{\partial \pof}{\partial t} + \frac{1}{2}\sigma^2S^2\frac{\partial^2\pof}{\partial S^2}\bigg)\Delta t + \sigma S \frac{\partial \pof}{\partial S} \Delta W
+\end{align*}
+
+and substituting these into \autoref{deltahedge}, we obtain
+
+\begin{equation}\label{LHS}
+    \Delta \Pi = \bigg(-\frac{\partial \pof}{\partial t} - \frac{1}{2}\sigma^2S^2\frac{\partial^2\pof}{\partial S^2}\bigg)\Delta t
+\end{equation}
+
+Note that \(\Delta W \) term has vanished. Thus, uncertainty has been eliminated, and the portfolio is effectively risk-less. The rate of return on this portfolio must be equal to the rate of return on any other risk-less instrument; otherwise, there would be opportunities for arbitrage. Now given the risk-free rate of return is \(r \), we must have over the same given time period:
+
+\begin{equation}\label{RHS}
+    r\Pi \Delta t = \Delta \Pi
+\end{equation}
+
+Now equating our two formulas for \(\Delta \Pi \), equations~\eqref{LHS} and~\eqref{RHS}
+
+\begin{equation*}
+    \bigg(-\frac{\partial \pof}{\partial t} - \frac{1}{2}\sigma^2S^2\frac{\partial^2\pof}{\partial S^2}\bigg)\Delta t = r\bigg(-\pof+S\frac{\partial \pof}{\partial S}\bigg)\Delta t
+\end{equation*}
+
+Simplifying, we arrive at the celebrated Black-Scholes equation:
+
+\begin{equation*}
+    \frac{\partial \pof}{\partial t} + \frac{1}{2}\sigma^2S^2\frac{\partial^2\pof}{\partial S^2} + rS\frac{\partial \pof}{\partial S} - r\pof = 0
+\end{equation*}
+
+With the assumptions of the Black-Scholes model, this second order partial differential equation holds for any type of option as long as its payoff function depends only on the underlying asset value at the expiry date and its price function \(\pof \) is twice differentiable with respect to \(S \) and once with respect to \(t \).
+
+\subsection{Risk-neutrality assumption}
+
+Before the publication of the Black-Scholes model, it was thought that the value of an option should be equal to it's expected payoff, for a European styled option; that is:
+
+\begin{equation*}
+    W\p{T,S(T)} = \E{e^{-rT}\poff{S(T)}} 
+\end{equation*}
+
+Where \(T\) is the option's expiry date, \(r\) the risk-free interest rate, \(\pof(t)\) the payoff function of the option and \(S(T)\) is the underlying asset value at time \(t\). Remembering back to our asset model, we know \(S(T) \) is a random variable from \autoref{eqn:c1:S(T)}. We may consider our option value at any \(t \in [0,T]\) as being:
+
+\begin{equation}\label{eqn:c1:disfpayoff}
+    W\p{t,S(T)} = e^{-r(T-t)}\E{\poff{S(T)\;|\;S(t)}} 
+\end{equation}
+
+Which may be written explicitly using our asset model and properties of RVs. We shall leave in this implicit form for brevity. This may seem like a reasonable approach to value an option. However, this equation has made no attempt to mitigate risk through the use of hedging; nor has it been derived with the no arbitrage principle we established in \autoref{subsubsec: No Arb} in mind. More importantly our equation depends on our drift parameter \(\mu \).
+\nline{}
+The no-arbitrage principle tells us that there can only be one fair value for an option, and that is the one quoted in the market. If the value was higher or lower an opportunity for arbitrage would occur giving investors risk-free profit. This restricts the value of the option to the Black-Scholes level, it follows that since our discounted expected payoff method depends on \(\mu \); that it cannot be used to get a fair value.
+\nline{}
+However, as it turns out if we assume what is called risk-neutrality assumption; that is we let our drift parameter be equal to our risk-free interest, i.e. \(\mu = r\). Then we arrive at the remarkable conclusion that our expected discounted payoff, \autoref{eqn:c1:disfpayoff} satisfies our Black-Scholes PDE, \autoref{eqn:BS}.
+\nline{}
+We summarize the risk-neutrality assumption as follows: regardless of the parameters \(\sigma\) and \(\mu\) we believe to be correct in our asset model \autoref{eqn:c1:geobrown model}. If we suppose that our drift \(\mu\) is instead equal to our risk-free interest rate \(r\) than by using the discounted expected payoff we can obtain the Black-Scholes option value. 
+\nline{}
+In the risk-neutral world we have that the expected price of an asset is just the same as investing the value of the initial asset risk-free, i.e. \(\E{S(t)} = S_0\exp\p{rt}\). This kind of process, one in which the expected future value is equal to the initial value is called a martingale process. Through martingale theory one can use the risk-neutrality assumption to price options consistent with the no-arbitrage principle~\cite{kritzman2000puzzles}. This proves to be a powerful tool when valuing options using numerical methods, we will see this in our next model \autoref{subsubsec: Binomial method} and \autoref{subsec: Asian Models}.
 
 \subsection{Binomial method}\label{subsubsec: Binomial method}
 
@@ -385,7 +489,7 @@ Substituting our potential \(S_T\) tells us the possible values of the option at
     \end{cases}
 \end{align*}
 
-We must now determine the value of \(\inc{\pof}{0}{0}\), a natural method may be to calculate the discounted expected payoff of the option; that is the amount you would need to invest risk-free to guarantee \(\E{\pof(S_T)}\) at \(t=T\); this depends on the probability \(p\). However, doing so leads to an answer which is not consistent with our No-Arbitrage assumption we established in \autoref{subsubsec: No Arb}. To price the option consistent with the No-Arbitrage assumption we must calculate the risk-neutral probability, \(p_*\) this is the probability in which our discounted expected payoff value is equal to the initial option value. It can be shown that the same probability \(p_*\), satisfies expected discounted asset value being equal to the initial asset value~\cite{higham2004introduction}, i.e.:
+We must now determine the value of \(\inc{\pof}{0}{0}\), a natural method may be to calculate the discounted expected payoff of the option; that is the amount you would need to invest risk-free to guarantee \(\E{\pof(S_T)}\) at \(t=T\); this depends on the probability \(p\). However, as mentioned previously, doing so leads to an answer which is not consistent with our No-Arbitrage assumption. To price the option consistent with the No-Arbitrage assumption we must calculate the risk-neutral probability, \(p_*\) this is the probability in which our discounted expected payoff value is equal to the initial option value; becoming a martingale process. It can be shown that the same probability \(p_*\), satisfies expected discounted asset value being equal to the initial asset value~\cite{kritzman2000puzzles}, i.e.:
 
 \begin{equation*}
     \Ep{p_*}{e^{-r\delta t}S_{\delta t}} = e^{-r\delta t}\s{p_*\inc{S}{1}{1} + \p{1-p_*}\inc{S}{1}{0}} = S_0
@@ -517,86 +621,6 @@ The BOMP is a very robust model allowing you to easily implement different payof
 \nline{}
 One of the biggest benefits is the relative simplicity of the model it is quite straight forward to programme an algorithm that implements the method without involving any complicated mathematics. However, a drawback to the method is that for options in which the number of computations grow exponentially relative to the number of time-steps.~i.e.~For Asian options, we need to calculate the average off all different possible paths so as \(N\) becomes large, this becomes computationally unviable. Hence, it is required that we modify the method; we will explore this in \autoref{subsec: Asian Models}.
 
-\subsection{Black-Scholes Model}
-
-\begin{equation}\label{eqn:BS}
-    \frac{\partial \pof}{\partial t} + \frac{1}{2}\sigma^2S^2\frac{\partial^2\pof}{\partial S^2} + rS\frac{\partial \pof}{\partial S} - r\pof = 0
-\end{equation}
-
-The Black Scholes Equation is a partial differential equation developed by two economists, Fisher Black and Myron Scholes. This equation shows the value of an option as a function of time and underlying asset value. Thus, solving this equation with an appropriately chosen boundary conditions you can in some cases find an analytical solution to price an option. Most famously, Black and Scholes showed that with a change of variables transformation, it was possible to transform the Black-Scholes equation for a European put or call option into the commonly solved heat equation. Upon solving and transforming the variables back, they had provided an analytical solution for a European put and call option.
-
-\subsection{Deriving the Black-Scholes equation}
-
-The following derivation is taken from an unpublished report~\cite{Yr2Project}, which follows works from Hull~\cite{hull2012options} which is in turn is based on the classic argument given in the original Black-Scholes paper~\cite{black1973pricing}. To derive the Black-Scholes Equation we must first make three assumptions about the price of an option.
-
-\begin{enumerate}
-    \item The stock price follows a Stochastic process, meaning that we can not use historical price to predict its future movement.
-    \item The option pays no dividends to the owner.
-    \item Risk-free rate, \(r\) and percentage volatility, \(\sigma \) are known and constant.
-\end{enumerate}
-
-We again assume that the price of an asset follows a geometric Brownian motion. However, we instead opt for the continuous form, that is:
-
-\begin{equation}\label{Brownian}
-    \frac{dS}{S} = \mu dt + \sigma dW
-\end{equation}
-
-Where \(W\) is a stochastic variable (Brownian motion). Note that \(W \), and consequently its infinitesimal increment \(dW \), represents the only source of uncertainty.
-
-The payoff of an option \(\pof(S,t) \) at the exercise date, \(t = T\) is known. To find the value of the option at an earlier time, we need to know how \(\pof \) changes as a function of \(S \) and \(t \).
-
-As we have assumed \(\pof(S,t) \) is a stochastic process and also dependent on time we can find the differential of \(\pof \) using Itō's lemma. 
-
-By Itō's lemma for two variables we have:
-
-\begin{equation}\label{Ito}
-    d\pof = \bigg( \mu S \frac{\partial \pof}{\partial S} + \frac{\partial \pof}{t} + \frac{1}{2}\sigma^2 S^2 \frac{\partial^2 \pof}{\partial S^2}\bigg)dt + \sigma S \frac{\partial \pof}{\partial S}dW
-\end{equation}
-
-Now, consider a specific portfolio, the delta-hedge portfolio, consisting of the negative value of the option and \(\frac{\partial \pof}{\partial S} \) shares at time \(t \). The value of the portfolio is then:
-
-\begin{equation*}
-    \Pi = -\pof + \frac{\partial \pof}{\partial S}S
-\end{equation*}
-
-Over a given time period, the total profit or loss from changes in the values of the holdings (the option and shares) is
-
-\begin{equation}\label{deltahedge}
-    \Delta \Pi = -\Delta \pof + \frac{\partial \pof}{\partial S}\Delta S
-\end{equation}
-
-Now discretizing equations~\eqref{Brownian} and~\eqref{Ito}:
-
-\begin{align*}
-    \Delta S &= \mu S \Delta t + \sigma S \Delta W , & \Delta \pof = \bigg(\mu S \frac{\partial \pof}{\partial S} + \frac{\partial \pof}{\partial t} + \frac{1}{2}\sigma^2S^2\frac{\partial^2\pof}{\partial S^2}\bigg)\Delta t + \sigma S \frac{\partial \pof}{\partial S} \Delta W
-\end{align*}
-
-and substituting these into \autoref{deltahedge}, we obtain
-
-\begin{equation}\label{LHS}
-    \Delta \Pi = \bigg(-\frac{\partial \pof}{\partial t} - \frac{1}{2}\sigma^2S^2\frac{\partial^2\pof}{\partial S^2}\bigg)\Delta t
-\end{equation}
-
-Note that \(\Delta W \) term has vanished. Thus, uncertainty has been eliminated, and the portfolio is effectively risk-less. The rate of return on this portfolio must be equal to the rate of return on any other risk-less instrument; otherwise, there would be opportunities for arbitrage. Now given the risk-free rate of return is \(r \), we must have over the same given time period:
-
-\begin{equation}\label{RHS}
-    r\Pi \Delta t = \Delta \Pi
-\end{equation}
-
-Now equating our two formulas for \(\Delta \Pi \), equations~\eqref{LHS} and~\eqref{RHS}
-
-\begin{equation*}
-    \bigg(-\frac{\partial \pof}{\partial t} - \frac{1}{2}\sigma^2S^2\frac{\partial^2\pof}{\partial S^2}\bigg)\Delta t = r\bigg(-\pof+S\frac{\partial \pof}{\partial S}\bigg)\Delta t
-\end{equation*}
-
-Simplifying, we arrive at the celebrated Black-Scholes equation:
-
-\begin{equation*}
-    \frac{\partial \pof}{\partial t} + \frac{1}{2}\sigma^2S^2\frac{\partial^2\pof}{\partial S^2} + rS\frac{\partial \pof}{\partial S} - r\pof = 0
-\end{equation*}
-
-With the assumptions of the Black-Scholes model, this second order partial differential equation holds for any type of option as long as its payoff function depends only on the underlying asset value at the expiry date and its price function \(\pof \) is twice differentiable with respect to \(S \) and once with respect to \(t \).
-
 \section{Pricing Asian options}\label{subsec: Asian Models}
 
 In this section we will explore several methods which can be used to price Asian options. Whilst an analytical solution exists for Asian options which use a geometric average~\cite{zhang1997exotic}; it not the case when we use the more popular arithmetic average. Asian options which use an arithmetic average must instead be solved using numerical approaches.
@@ -639,10 +663,10 @@ Suppose \(3\delta t = T\), then we are able to calculate the value of the option
         \draw[->] (tree-6-3) -- (tree-5-4) node [midway,below] {};
         \draw[->] (tree-6-3) -- (tree-7-4) node [midway,below] {};
     \end{tikzpicture}
-    \caption{A binomial-tree representing the potential assets values with the corresponding path averages below.}\label{tree:c1:asian averages}
+    \caption{A binomial-tree representing the potential assets values with the corresponding path averages below. \(S_0 = 10,\;u=1.1,\;d=1/u,\;\delta t = 0.1\)}\label{tree:c1:asian averages}
 \end{figure}
 
-Let our option be a fixed-strike price Asian call option, in which the arithmetic average taken every \(\delta t = 0.1\) is used as the spot price with strike price \(E = 10\). Then using \autoref{tree:c1:asian averages} we proceed to calculate our option value at \(t = T\), we will calculate for both \(\inct{\pof}{3}{3}{k}\) and \(\inct{\pof}{3}{2}{k}\)
+Let our option be a fixed-strike price Asian call option, in which the arithmetic average taken every \(\delta t = 0.1\) is used as the spot price with strike price \(E = 10\). Then using \autoref{tree:c1:asian averages} we can proceed to calculate our option value at \(t = T\), we will calculate for both \(\inct{\pof}{3}{3}{k}\) and \(\inct{\pof}{3}{2}{k}\)
 
 \begin{align*}
     \begin{split}
@@ -656,11 +680,11 @@ Let our option be a fixed-strike price Asian call option, in which the arithmeti
     \end{split}
 \end{align*}
 
-Now, as it stands we are able to use \autoref{eqn:c1:binomial method eqn} to work backwards and price \(\inct{\pof}{2}{2}{1}\). We just need to make a slight adjustment to the formula and select \(k_u\) such that the \(k_u^{th}\) option value is the value in which we arrive after an up step; similarly \(k_d\) to arrive at the correct down step.
+Now, as it stands we are able to use \autoref{eqn:c1:binomial method eqn} to work backwards and price \(\inct{\pof}{2}{2}{1}\). We just need to make a slight adjustment to the formula and select \(k_u\) such that the \(k_u^{th}\) option value is the value in which we arrive after an up step from \(\inct{\pof}{i}{j}{k}\); similarly \(k_d\) to arrive at the correct down step.
 
-\begin{equation*}
+\begin{equation}\label{eqn:asian binomial eqn}
     \inct{\pof}{i}{j}{k} = e^{-r\delta t}\p{p_*\inct{\pof}{i+1}{j+1}{k_u} + \p{1-p_*}\inct{\pof}{i+1}{j}{k_d}}
-\end{equation*}
+\end{equation}
 
 This gives us the following equation for \(\inct{\pof}{2}{2}{1}\)
 
@@ -668,6 +692,8 @@ This gives us the following equation for \(\inct{\pof}{2}{2}{1}\)
     \inct{\pof}{2}{2}{1} &= e^{-r\delta t}\p{p_*\inct{\pof}{3}{3}{1} + \p{1-p_*}\inct{\pof}{3}{2}{1}} \\
     &= e^{-r\delta t}\p{p_*3.31 + \p{1-p_*}1.02}
 \end{align*}
+
+As we did with the standard BOPM we can repeat this process for all nodes and their respective path dependent averages, working backwards till we reach \(\inct{\pof}{0}{0}{0}\), giving us the present value of the option.
 
 \subsubsection{Difficulties with BOPM}
 
@@ -687,9 +713,21 @@ To overcome this problem, the model uses a list of so-called representative aver
 
 \subsubsection{Representative Averages}
 
-Hull and White decided admittedly arbitrarily, the representative averages would be of the form: \(S(0)e^{m\delta t}\), where \(m \) being a positive of negative integer.
+Hull and White decided admittedly arbitrarily, the representative averages would be of the form: \(\inc{F}{0}{m} = S(0)e^{hm}\), with \(h\) being some constant and \(m \) being a positive of negative integer. With our initial representative average being \(S_0\) and at each time step we append an additional two averages.
 \nline{}
-Let us consider the potential arithmetic averages of an asset with initial price \(S_0 = 10\),\(u = 1.1,\; d = 0.9\) and \(\delta t = 0.1\) where \(t \) is in units of years.
+Let us consider our previous binomial tree \autoref{tree:c1:asian averages}, considering all of our maximum and minimum averages at time step 1, \(10.50\) and \(9.54\). We will set \(h=0.1\), it then follows that we can use \(m = +1,\, -1\) to cover this range of averages. For our first time step then, our list of representative averages along with \(S_0\) is:
+
+\begin{align*}
+    S(0)e^{0.1} = 11.05 && S(0)e^{-0.1} = 9.05
+\end{align*}
+
+We can then calculate our maximum and minimum averages at the next time step, as follows: \(\p{2\cdot 10.50 +\inc{S}{2}{2}}/3 = 11.03\) and \(\p{2\cdot 9.05 +\inc{S}{2}{0}}/3 = 9.11\). Here, we use \(m = +2\, -2\) along with our previous values to be our representative averages at our second time step; giving us:
+
+\begin{align*}
+    S(0)e^{0.2} = 12.21 && S(0)e^{-0.2} = 8.19
+\end{align*}
+
+Now, considering our previous binomial tree \autoref{tree:c1:asian averages}, but this time let \(T = 2\delta t\). We will focus on node \(\inc{S}{1}{1}\) and the paths that come from it. We will again show the value of the asset at that node; but below we will this time opt for showing our representative averages and the corresponding values of a fixed-price Asian put option with \(E = 10\), \(\delta t = 0.1\) and \(r = 0.3\). For \(t = T\) we simply use \(\max\p{\inc{F}{T}{i} - E, 0}\) to calculate our option value, where \(\inc{F}{T}{i} \) are our representative averages at time \(T\). 
 
 \begin{figure}[H]
     \centering
@@ -697,40 +735,46 @@ Let us consider the potential arithmetic averages of an asset with initial price
         \matrix (tree) [%
             matrix of nodes,
             minimum size=1cm,
-            column sep=2.5cm,
-            row sep=0.5cm,
+            column sep=3.0cm,
+            row sep=0.75cm,
         ]
         {
-                                &                               & \nd[11.03]{\incm{S}{2}{2}=12.1} \\
-                                & \nd[10.5]{\incm{S}{1}{1}=11}  & \\
-            \nd[10]{\incm{S}{0}{0}=10}    &                         & \nd[10.3][9.63]{\incm{S}{2}{1}=9.9} \\
-                                & \nd[9.5]{\incm{S}{1}{0}=9}    & \\
-                                &                               & \nd[9.03]{\incm{S}{2}{0}=8.1} \\
-                                \(t = 1\delta t\) & \(t = 2 \delta t\) & \(t = 3 \delta t\) \\
+                            & \tabo  \\
+                    \taboo  & \\
+                            & \tabooo\\
+                           \( t = 1\delta t\) & \(t = 2\delta t\) \\
         };
-        \draw[->] (tree-3-1) -- (tree-2-2) node [midway,above] {};
-        \draw[->] (tree-3-1) -- (tree-4-2) node [midway,below] {};
-        \draw[->] (tree-2-2) -- (tree-1-3) node [midway,above] {};
-        \draw[->] (tree-2-2) -- (tree-3-3) node [midway,below] {};
-        \draw[->] (tree-4-2) -- (tree-3-3) node [midway,above] {};
-        \draw[->] (tree-4-2) -- (tree-5-3) node [midway,below] {};
+        \draw[->] (tree-2-1) -- (tree-1-2) node [midway,above] {};
+        \draw[->] (tree-2-1) -- (tree-3-2) node [midway,below] {};
     \end{tikzpicture}
     \caption{A binomial-tree representing the potential assets values with the corresponding possible averages below.}
 \end{figure}
 
-We can see at time step 1, our possible averages are \(10.5\) and \(9.5\). It follows that we can then use \(m = +1,\, -1\) to cover these averages. For our first time step then, our list of representative averages is:
+To calculate the option values show at \(\inc{S}{1}{1}\) we do for the following. We consider being at the representative average 11.05, if we were to jump up, our new average would become \(\p{2\cdot 11.05 + 12.1}/3 = 11.4\) we then interpolate between our two closest representative averages to get \(\inct{\pof}{2}{2}{k_u}\), similarly for \(\inct{\pof}{2}{1}{k_d}\):
 
 \begin{align*}
-    S(0)e^{0.1} = 11.0517 && S(0)e^{-0.1} = 9.0484
-\end{align*}
+    \inct{\pof}{2}{2}{k_u} = \intep{11.05}{1.05}{12.21}{2.21}{11.4} &= 1.4 \\
+    \inct{\pof}{2}{2}{k_d} = \intep{11.05}{1.05}{12.21}{2.21}{10.7} &= 0.7   
+\end{align*} 
 
-Similarly, at time step two our possible averages are \(11.03,10.3,9.63\) and \(9.03\). For which we know use \(m = +2, -2\) and our previous list, giving us:
+Allowing us to calculate our \(\inct{\pof}{1}{1}{1}\) with \autoref{eqn:asian binomial eqn}:
 
 \begin{align*}
-    S(0)e^{0.2} = 12.2140 && S(0)e^{-0.2} = 8.1873
+    \inct{\pof}{1}{1}{1} &= e^{-r\delta t}\p{p_*\inct{\pof}{2}{2}{k_u} + \p{1-p_*}\inct{\pof}{2}{1}{k_d}} \\
+    &= 1.11
 \end{align*}
+
+This is then repeated for all representative averages for all nodes at that time step before moving backwards to repeat for the previous time step. This is then repeated till \(\inct{\pof}{0}{0}{0}\) is reached, in which the option has been valued for the current time.
+
+\subsubsection{Considerations}
+
+It stands that by using the Hull-White model we no longer need to consider all the possibly paths, we only consider the list of representative averages. We know that as the number of steps \(N\) increases we increase our number of representative averages by two. Meaning our number of computations as \(N\) increases is again linear, \(\sim\BigO{N}\). This means that this method is computationally viable for Asian options with large \(N\).
+\nline{}
+Hull and White showed in their paper that the method is very sensitive to the selection of \(h\) and \(m\) when calculating representative averages. Whilst you can simply select \(m\) deterministically by letting it be the smallest integer value that encompasses the range of averages; it still leaves \(h\) to be decided.
 
 \subsubsection{Costabile adjusted binomial method}
+
+Since the introduction of the first binomial tree method for solving Asian options by Hull and White; there were many similar schemes which followed. All followed the same principle, but each chose different methods to produce the list of representative averages~\cite{barraquand1996pricing, chalasani1997accurate, klassen2001simple}. Costabile et al.~\cite{costabile2006adjusted} presented a binomial method of their own in 2006. The method also followed the same principles as the Hull and White model, in that it reduces the number of averages. The authors however present a different method to choose the list of representative averages, rather than simulating the averages the method instead realizes effective averages at each node.
 
 \subsubsection{Analytical solution for geometric average Asian options}
 
