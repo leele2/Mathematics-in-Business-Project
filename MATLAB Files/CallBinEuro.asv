@@ -23,7 +23,7 @@ disf=exp(-r*dt);        %% discount factor over each timestep
 p=(1/disf - d)/(u-d);   %% risk-neutral probability
 %%%
 
-X=zeros(n+1,n+1)-1; % Array for option values
+X=zeros(n+1,n+1); % Array for option values
                   % Note: MATLAB subscripts start from 1 (not 0)
 for k=1:(n+1) 
     X(n+1,k)=max(S*u^(k-1)*d^(n-k+1)-E,0);

@@ -5,3 +5,4 @@
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QHowever, a lesser known French stockbroker's assistant Jules Renault was first to do so in his 1863 publication “calcul des chances et philosophie de la bourse” \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QHowever, a lesser known French stockbroker's assistant Jules Renault was first to do so in his 1863 publication“calcul des chances et philosophie de la bourse” \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QHowever, a lesser known French economist Jules Renault was first to do so in his 1863 publication “calcul des chances et philosophie de la bourse” \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
+{"rule":"AN_AND","sentence":"^\\QSince you calculate values one node at a time it is also very easy to implement break conditions, such as an all of nothing option.\\E$"}

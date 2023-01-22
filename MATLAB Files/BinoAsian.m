@@ -1,7 +1,7 @@
 %function BinoAsian(S0,E,T,r,sigma,N,F)
 addpath('Functions')  
 %% Test
-clear; tic; S0=100;  E=100; T=0.25; r=0.1; sigma=0.1; N=10; F=@(S,A)max(A-E,0);
+clear; tic; S0=100;  E=100; T=5; r=0.5; sigma=0.1; N=50; F=@(S,A)max(A-E,0);
 %% Function to evaluate European Call option by Binomial Method
 %   Parameters:
 %   S0 = initial share price
@@ -17,6 +17,7 @@ u    = exp(sigma*sqrt(dt));  %Up price movement
 d    = 1/u;                  %Down price movement
 disf = exp(-r*dt);           %Discount factor over each timestep
 p    = (1/disf - d)/(u-d);   %Risk-neutral probability
+%p    = (1/exp(r*dt) - d)/(u-d);
 %% Initalizing Arrays and Functions
 S     = zeros(N+1,N+1);   %Underlying Asset Price
 S_k   = cell(N+1,N+1);    %S_max %% Cells are used so different sized vectors can be stored at each element in cell array

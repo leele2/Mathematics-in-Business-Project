@@ -4,17 +4,43 @@
 \newcommand\var[1]{\text{Var}\left[\,#1\,\right]} %Var[]
 \newcommand\cov[2]{\text{Cov}\left[\,#1,#2\,\right]} %Cov[x1,x2]
 \newcommand\E[1]{\text{E}\left[\,#1\,\right]} %E[]
+\newcommand\Ep[2]{\text{E}_{#1}\left[\,#2\,\right]}
 \newcommand\IQR{\text{I}\text{Q}\text{R}}
-\newcommand\nline\par\vspace{4pt}
+\newcommand{\nline}{\par\vspace{10pt}}
 \newcommand\sOneSize{0.60}
 \newcommand\sTwoRes{0.70}
 \newcommand\PgSz{\scriptsize}
 \newcommand\p[1]{\left(#1\right)}
 \newcommand\s[1]{\left[#1\right]}
+\newcommand\curl[1]{\left\{ #1 \right\}}
+%\newcommand{\inc}[3]{#1^{\mathbf{\left(#3 \right)}}_{#2}}
+\newcommand{\inc}[3]{#1_{\p{#2,#3}}}
+\newcommand{\incm}[3]{\(\inc{#1}{#2}{#3}\)}
+\newcommand{\inct}[4]{#1_{\p{#2,#3,#4}}}
 \newcommand{\nat}{\mathbb{N}}
+\newcommand{\rel}{\mathbb{R}}
 \newcommand{\wei}{\mathcal{W}}
 \newcommand{\norm}{\mathcal{N}}
-\DeclareFontShape{OT1}{cmr}{bx}{sc}{<-> cmbcsc10}{}
+\newcommand{\BigO}[1]{\mathcal{O}\left(#1\right)}
+\newcommand{\logp}[1]{\log\left(#1 \right)}
+\newcommand{\spc}{\phantom{10.0}}
+\newcommand{\pof}{\mathbb{V}}
+\newcommand{\poff}[1]{\pof\p{#1}}
+\newcommandx\nd[3][1=\spc, 2=\spc]{
+    \begin{tabular}{cc}
+        \multicolumn{2}{c}{#3} \\
+        \midrule
+        #1 & #2 \\ 
+        \bottomrule
+    \end{tabular}
+}\newcommandx\ndt[4][1=\spc, 2=\spc, 3=\spc]{
+  \begin{tabular}{ccc}
+      \multicolumn{3}{c}{#4} \\
+      \midrule
+      #1 & #2 & #3\\ 
+      \bottomrule
+  \end{tabular}
+}
 %% Defaults for LstListing Environment
 \lstset{
   caption=\lstname,
@@ -63,6 +89,6 @@
 \let\endtable\endfigure{}
 \renewcommand\listfigurename{List of Figures and Tables}
 %%Formating Chapter spacing and linebreak
-\titleformat{\chapter}[hang] 
+\titleformat{\chapter}[hang]
 {\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter:}{1em}{}
 \titlespacing*{\chapter}{0pt}{0pt}{5pt}
