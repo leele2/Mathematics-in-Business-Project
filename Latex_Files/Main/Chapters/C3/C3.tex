@@ -1,0 +1,49 @@
+% !TeX root = ..\..\main.tex
+\chapter{Results}
+
+The results shown in \autoref{tab1} is a comparison between our Costabile method using path search, and the alternative approach we previously outlined. Our parameters are as follows: \(S_0 =50, T = 1, r= 0.1, \sigma = 0.3\) with our option being an arithmetic Asian call option. Our table shows the alternative approach minus the path approach. We can see that for all values the difference between the two approaches is miniscule, thus validating our approach.
+
+\begin{figure}[H]
+    \begin{center}
+        \csvautotabular{table1.csv}
+    \end{center}
+    \caption{Here is a table which shows the difference between the alternative approach and the path search approach for varying strike price and number of steps}\label{tab1}
+\end{figure}
+
+\section{Accuracy}
+
+Next we will compare our model to the results published in the Costabile paper~\cite{costabile2006adjusted}, specifically table 3, and table 4. Our results are shown in \autoref{tab2} and \autoref{tab3} respectively. We can see that our results are very close to the results published by Costabile et al.~especially in \autoref{tab2}, however there are some discrepancies in \autoref{tab3}, see \(N = 70\).
+
+\begin{figure}[H]
+    \begin{center}
+        \csvautotabular{table2.csv}
+    \end{center}
+    \caption{Here is a table which compares our alternative Costabile method against the published results in the original paper by Costabile et al.~\cite{costabile2006adjusted} Parameters are such: \(S_0 = 50, E=40,T=1,r=0.1,\sigma=0.3\) and the option is an arithmetic Asian call option}\label{tab2}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{center}
+        \csvautotabular{table3.csv}
+    \end{center}
+    \caption{Here is a table which compares our alternative Costabile method against the published results in the original paper by Costabile et al.~\cite{costabile2006adjusted} Parameters are such: \(S_0 = 100, E=100,T=5,r=0.1,\sigma=0.5\) and the option is an arithmetic Asian call option}\label{tab3}
+\end{figure}
+
+However, upon checking the values against our implemented path search Costabile method we arrive at the same discrepancies see \autoref{tab4}. This is quite unexpected and would require more research.
+
+\begin{figure}[H]
+    \begin{center}
+        \csvautotabular{table4.csv}
+    \end{center}
+    \caption{Here is a table which compares our path search Costabile method against the published results in the original paper by Costabile et al.~\cite{costabile2006adjusted} Parameters are such: \(S_0 = 100, E=100,T=5,r=0.1,\sigma=0.5\) and the option is an arithmetic Asian call option}\label{tab4}
+\end{figure}
+
+\section{Efficiency}
+
+The follow table \autoref{tab5} shows the average speed taken for a variety of \(N \) values. We can see that whilst both methods give a similar time for small \(N\) as it increases a big improvement starts to materialize. 
+
+\begin{figure}[H]
+    \begin{center}
+        \csvautotabular{table5.csv}
+    \end{center}
+    \caption{Here is a table which compares our the speed of our alternative Costabile method against the traditional path search method, with execute time shown in seconds. Parameters are such: \(S_0 = 50, E=40,T=1,r=0.1,\sigma=0.3\) and the option is an arithmetic Asian call option}\label{tab5}
+\end{figure}

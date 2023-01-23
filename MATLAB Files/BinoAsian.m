@@ -1,7 +1,5 @@
-%function BinoAsian(S0,E,T,r,sigma,N,F)
-addpath('Functions')  
-%% Test
-clear; tic; S0=100;  E=100; T=5; r=0.5; sigma=0.1; N=50; F=@(S,A)max(A-E,0);
+function value = BinoAsian(S0,E,T,r,sigma,N,F)
+addpath('Functions')
 %% Function to evaluate European Call option by Binomial Method
 %   Parameters:
 %   S0 = initial share price
@@ -10,22 +8,18 @@ clear; tic; S0=100;  E=100; T=5; r=0.5; sigma=0.1; N=50; F=@(S,A)max(A-E,0);
 %   r = riskfree interest rate
 %   sigma = volatility
 %   N = Number of steps
-%   F = Option Payoff (European Call in given)
+%   F(E,S) = Option Payoff
 %% Calculated parameters
 dt   = T/N;                  %Timestep
 u    = exp(sigma*sqrt(dt));  %Up price movement
 d    = 1/u;                  %Down price movement
 disf = exp(-r*dt);           %Discount factor over each timestep
 p    = (1/disf - d)/(u-d);   %Risk-neutral probability
-%p    = (1/exp(r*dt) - d)/(u-d);
 %% Initalizing Arrays and Functions
 S     = zeros(N+1,N+1);   %Underlying Asset Price
 S_k   = cell(N+1,N+1);    %S_max %% Cells are used so different sized vectors can be stored at each element in cell array
-A     = zeros(N+1,N+1);   %Average of Underlying Asset Price
 A_k   = cell(N+1,N+1);    %Representitive averages
-C     = zeros(N+1,N+1);   %Price of Option
 C_k   = cell(N+1,N+1);    %Option price for given representitive avg
-%F     = @(S,A)max(A-E,0); %Option Payoff (European Call)
 %% Functions to Calculate Maximum and Minimum Representative Averages
 A_min = @(i,j) (1/(i+1)) * (sum(S0*d.^(0:i-j)) + sum(S0*d.^(0:(j-1)+i-(2*j))));
 A_max = @(i,j) (1/(i+1)) * (sum(S0*u.^(0:j)) + sum(S0*u.^((0:(i-j-1))+(2*j)-i)));
@@ -42,7 +36,7 @@ for i = 0:N
         S_k{i+1,j+1} = NaN(j*(i-j),1);     %Create Vector to hold S_max
         A_k{i+1,j+1}(1) = A_max(i,j);      %Assign A_max to first element in vector
         % Paths with only up (i = j) or down movements (j = 0) or i = 1 will only have one representative average
-        if i < 1 || i == j || j == 0
+        if i == j || j == 0
             S_k{i+1,j+1}(1) = S0*(u^j)*d^(i-j);
             continue
         end
@@ -51,30 +45,30 @@ for i = 0:N
         n = j*(i-j);        %Size of vector
         rep = min([j;i-j]); %Maximum element repetition in vector
         % Calculating unique elements in vector
-        unique = 2*numel(1:rep-1) + (n - (2*sum(1:rep-1)))/rep;
+        unique = 2*(rep-1) + (n - ((rep-1)*rep))/rep;
         % First and last values
         S_k{i+1,j+1}(1)   = S0 * (u ^ j);
         S_k{i+1,j+1}(end) = S0 * (u ^ (j - unique + 1));
         %%The following if statement changes the final output%%
-        if n ~= 2
-            % Ascending/Descending repeated values
-            k     = 2; %iterator
-            count = 2; %Number of elements filled
-            while k < rep
-                % Filling from top
-                S_k{i+1,j+1}(sum(1:k-1)+1:sum(1:k-1)+k) = repmat(S0*(u^(j-k+1)), k, 1);
-                % Filling from bottom
-                S_k{i+1,j+1}(n-sum(1:k-1)+1-k:n-sum(1:k-1)) = repmat(S0*(u^(j-unique+k)), k, 1);
-                count = count + 2*k;
-                k = k + 1;
-            end
-            % "Middle" repeated values
-            for l = 0 : (n-count)/rep - 1
-                S_k{i+1,j+1}(count/2+1+l*rep:end) = [repmat(S0*u^(j-k+1), rep, 1);
-                    S_k{i+1,j+1}(count/2+1+l*rep+rep:end)];
-                k = k + 1;
-            end
+        %if n ~= 2
+        % Ascending/Descending repeated values
+        k     = 2; %iterator
+        count = 2; %Number of elements filled
+        while k < rep
+            % Filling from top
+            S_k{i+1,j+1}(sum(1:k-1)+1:sum(1:k-1)+k) = repmat(S0*(u^(j-k+1)), k, 1);
+            % Filling from bottom
+            S_k{i+1,j+1}(n-sum(1:k-1)+1-k:n-sum(1:k-1)) = repmat(S0*(u^(j-unique+k)), k, 1);
+            count = count + 2*k;
+            k = k + 1;
         end
+        % "Middle" repeated values
+        for l = 0 : (n-count)/rep - 1
+            S_k{i+1,j+1}(count/2+1+l*rep:end) = [repmat(S0*u^(j-k+1), rep, 1);
+                S_k{i+1,j+1}(count/2+1+l*rep+rep:end)];
+            k = k + 1;
+        end
+        %end
         %% Calculating Representitive Averages Using S_max
         A_k{i+1,j+1}(j*(i-j) + 1) = A_min(i,j); %Assign A_min to last element in vector
         for k = 2:j*(i-j)
@@ -85,7 +79,7 @@ for i = 0:N
 end
 %% Pricing Option Value at Final Time (N)
 for j = 0:N
-    C_k{N+1,j+1} = F(S(N+1,j+1),A_k{N+1,j+1});
+    C_k{N+1,j+1} = F(E,A_k{N+1,j+1});
 end
 %% Pricing Option
 err = 1e-3;
@@ -122,5 +116,4 @@ for i = N-1:-1:0
         end
     end
 end
-disp(C_k{1,1})
-toc;
+value = C_k{1,1};

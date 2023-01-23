@@ -3,10 +3,7 @@
 \pagenumbering{arabic}
 This report studies a vital financial derivative in today's markets, namely options. The importance of the option market has been shown by empirical studies which suggest that option trading improves information efficiency in the broader stock market~\cite{PanInfoEffic,li2021effect}, and also that firms with listed options experience lower implied cost of equity capital~\cite{naikerLowEquity}; indicating that options trading reduces the cost of capital~\cite{li2021effect}. The popularity of the options market can easily be seen in \autoref{C1fig:OptionVolume}, which shows the exponential growth in trading volume since standardized, exchange-traded stock options were first listed in The Chicago Board Options Exchange in 1973~\cite{markham2002financial}. In 2020 single stock option trading volume became higher than the underlying stock volume for the first time ever~\cite{yahooOptions}. 
 \nline{}
-It is this explosive popularity and significance which have motivated this report. 
-\\\\
-We will begin by describing standard options and explore popular methods that are used to price them. We will then move onto Asian options and look at the literature surrounding how to price them before implementing several pricing methods with the use of \textsc{Matlab}. Furthermore, we will then take an analytical approach to determine how Asian options can be priced accurately and efficiently.
-\\\\
+It is this explosive popularity and significance which have motivated this report. We will begin by describing standard options and explore popular methods that are used to price them. We will then move onto Asian options and look at the literature surrounding how to price them before implementing several pricing methods with the use of \textsc{Matlab}. Furthermore, we will make an adjustment to a well-established pricing model, in hopes of improving its efficiency. We will then take an analytical approach to determine if the change has impacted the models ability to price accurately and efficiently.
 
 \begin{figure}[H]
     \centering
@@ -772,10 +769,93 @@ It stands that by using the Hull-White model we no longer need to consider all t
 \nline{}
 Hull and White showed in their paper that the method is very sensitive to the selection of \(h\) and \(m\) when calculating representative averages. Whilst you can simply select \(m\) deterministically by letting it be the smallest integer value that encompasses the range of averages; it still leaves \(h\) to be decided.
 
-\subsubsection{Costabile adjusted binomial method}
+\subsection{Costabile adjusted binomial method}
 
-Since the introduction of the first binomial tree method for solving Asian options by Hull and White; there were many similar schemes which followed. All followed the same principle, but each chose different methods to produce the list of representative averages~\cite{barraquand1996pricing, chalasani1997accurate, klassen2001simple}. Costabile et al.~\cite{costabile2006adjusted} presented a binomial method of their own in 2006. The method also followed the same principles as the Hull and White model, in that it reduces the number of averages. The authors however present a different method to choose the list of representative averages, rather than simulating the averages the method instead realizes effective averages at each node.
+Since the introduction of the first binomial tree method for solving Asian options by Hull and White; many similar schemes followed, each method used different methods to produce the list of representative averages~\cite{barraquand1996pricing, chalasani1997accurate, klassen2001simple}. Costabile et al.~\cite{costabile2006adjusted} presented a binomial method of their own in 2006. The method also followed the same principles as the Hull and White model, in that it reduces the number of total averages to a representative list. The authors however present a method which rather than simulating the averages, instead realizes effective averages at each node.
+\nline{}
+What this means, is instead of producing an equation which estimates the representative average on parameters; which can lead to poor valuing and/or slow calculating when selected poorly. Instead, the representative averages are a subset of true averages which are selected through an algorithm we will describe below.
+
+\subsubsection{Selecting representative averages}
+
+We used similar notation as previously in that \(\inc{S}{i}{j}\) represents the asset value at time \(i\), after \(j\) up  steps and \(i-j\) down steps, i.e.
+
+\begin{equation*}
+    \inc{S}{i}{j} = S_0u^jd^{i-j}
+\end{equation*}
+
+Then for each node we consider a set of representative averages, denoted by \(\inct{A}{i}{j}{k}\). Let us consider the maximum and minimum averages that can realized at any node \(\p{i,\;j}\). It is the case that for any node \(\p{i,\;j}\) that the maximum average will be from the path which takes \(j\) up steps followed by \(i-j\) down steps. For the minimum average it is the path which takes \(j-i\) down steps followed by \(j\) up steps. We will call these two paths \(\tmax{i}{j} \) and \(\tmin{i}{j} \); these paths for node \(\p{3,\,2}\) are highlighted in \autoref{tree:costabile min max averages} as the red and blue paths respectively. We assign our maximum average \(\inct{A}{i}{j}{1} = A_\text{max}\p{i,\,j}\) and minimum average as last in our list \(\inct{A}{i}{j}{1+ j\p{i-j}} = A_\text{min}\p{i,\,j}\), we will see why \(\max\p{k} = 1+j\p{i-j}\) shortly.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[>=stealth,sloped]
+        \matrix (tree) [%
+            matrix of nodes,
+            minimum size=1cm,
+            column sep=1.50cm,
+            row sep=0.15cm,
+        ]
+        {
+                            &               &               &\incm{S}{3}{3} \\
+                            &               &\incm{S}{2}{2} & \\
+                            & \incm{S}{1}{1} &               &\incm{S}{3}{2}\\
+            \incm{S}{0}{0}  &               &\incm{S}{2}{1} &\\
+                            &\incm{S}{1}{0} &               &\incm{S}{3}{1}\\
+                            &               &\incm{S}{2}{0} &\\
+                            &               &               &\incm{S}{3}{0}\\
+        };
+        \draw[->][red] (tree-4-1) -- (tree-3-2) node [midway,above] {};
+        \draw[->][blue] (tree-4-1) -- (tree-5-2) node [midway,below] {};
+        \draw[->][red] (tree-3-2) -- (tree-2-3) node [midway,above] {};
+        \draw[->] (tree-3-2) -- (tree-4-3) node [midway,below] {};
+        \draw[->][blue] (tree-5-2) -- (tree-4-3) node [midway,above] {};
+        \draw[->] (tree-5-2) -- (tree-6-3) node [midway,below] {};
+        \draw[->] (tree-2-3) -- (tree-1-4) node [midway,below] {};
+        \draw[->][red] (tree-2-3) -- (tree-3-4) node [midway,below] {};
+        \draw[->][blue] (tree-4-3) -- (tree-3-4) node [midway,below] {};
+        \draw[->] (tree-4-3) -- (tree-5-4) node [midway,below] {};
+        \draw[->] (tree-6-3) -- (tree-5-4) node [midway,below] {};
+        \draw[->] (tree-6-3) -- (tree-7-4) node [midway,below] {};
+    \end{tikzpicture}
+    \caption{A binomial tree representing the possible asset values from \(t=0\) to \(t=3\delta t\); with \(\tmax{3}{2}\) and \(\tmin{3}{2}\) highlighted in red and blue respectively.}\label{tree:costabile min max averages}
+\end{figure}
+
+We calculate the other representative averages in the following way, let \(\smax{i}{j}{k}\) be the highest asset value reached on the trajectory that produces \(\inct{A}{i}{j}{k}\) that is not along the path \(\tmin{i}{j}\), then:
+
+\begin{equation*}
+    \inct{A}{i}{j}{k+1} = \inct{A}{i}{j}{k} -\frac{1}{i+1}\s{\smax{i}{j}{k} - \smax{i}{j}{k}d^2}
+\end{equation*}
+
+This means that we find out \(k^{\text{th}} + 1\) average from our \(k^{\text{th}}\) average by simply substituting the highest value reached in the \(k^\text{th}\) path not belonging to \(\tmin{i}{j}\) with \(\smax{i}{j}{k}d^2\). Since trajectory \(\tmin{i}{j}\) produces the minimum average \(A_\text{min}\p{i,\,j}\). Starting from \(\tmax{i}{j}\) it is clear to see that we reach \(\tmin{i}{j}\) after \(j\p{i-j}\) substitutions, hence our total number of representative averages at node \(i,\,j\) is \(1+j\p{i-j}\).
+\nline{}
+Instead of considering the path, we can instead use the following formulae for our maximum and minimum representative averages:
+
+\begin{align*}
+    \inct{A}{i}{j}{1} = A_\text{max}\p{i,\,j} = \frac{1}{i+1}\p{\sum_{h=0}^j S_0u^h + \sum_{h=0}^{i-j-1}S_0u^{h+2j-i}} \\
+    \inct{A}{i}{j}{1+j\p{i-j}} = A_\text{min}\p{i,\,j} = \frac{1}{i+1}\p{\sum_{h=0}^{i-j} S_0d^h + \sum_{h=0}^{j-1}S_0d^{i-2j+h}} 
+\end{align*}
+
+Once all representative averages have been constructed we can again use \autoref{eqn:asian binomial eqn} to work backwards through our binomial tree to reach the current value of the option at \(t = 0\), again interpolating when needed as done in the Hull-White model.
 
 \subsubsection{Analytical solution for geometric average Asian options}
 
-\subsection{Monte-Carlo method}
+\section{Monte-Carlo methods}
+
+The Monte-Carlo methods describes a method in which instead of trying to solve a statistical problem either analytically or through the use of numerical approximations; but rather, run multiple simulations and determine the outcome in a deterministic manner. We know that, by the law of large numbers for a series of independently identically distributed RVs \(X_1,X_2,\dots X_n\) that: 
+
+\begin{align*}
+    \E{X_i} = \frac{1}{n}\sum_{i=1}^nX_i && \var{X_i} = \frac{1}{n-1}\sum_{i=1}^n\p{X_i-\E{X_i}}^2
+\end{align*}
+
+Thus, if we were able to simulate realizations of \(X\), for large \(n\) we can simply use the above formulae to approximate the expectation and variance.
+
+\subsubsection{Valuing options using Monte-Carlo methods}
+
+Recalling back to risk-neutrality assumption, we asserted that if we were to let \(\mu = r\), then we are able to value options by simply taking the expectation of the payoff function \(\E{e^{-r(T-t)}\poff{S(t)}}\). Remembering that our asset price \(S(t)\) is modelled by \autoref{eqn:c1:S(T)} and using \(\mu = r\), we write the current value of a European option as:
+
+\begin{equation*}
+    e^{-rT}\E{\poff{S_0\exp^{\p{r-\frac{1}{2}}T+\sigma\sqrt{T}Z}}},\quad\text{Where \(Z\sim\norm\p{0,1}. \)}
+\end{equation*}
+
+Thus, we can simulate many realizations of \(\poff{S(t)}\) and take the mean of them all to find an approximation for our option value. It is worth noting that to implement a Monte-Carlo method to price Asian option, it would be necessary to compute realizations across multiple times according to averaging function of the option.
+\nline{}
+The Monte-Carlo method is often used at the ``true'' value  when an analytical solution does not exist, of course providing that a large amount of realizations is used. Whilst providing highly accurate approximations, the method by nature is very computationally expensive. Despite that becoming less of an issue with computing power increasing globally, it still stands that more efficient methods are desirable. However, the simplicity of Monte-Carlo methods is allows for easy modification to apply to many kinds of options making the method very robust.

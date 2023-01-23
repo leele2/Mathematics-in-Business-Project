@@ -34,6 +34,8 @@
 \usetikzlibrary{matrix}
 \addbibresource{mybibliography.bib}
 \usepackage{xargs}
+\RequirePackage{etoolbox}
+\usepackage{csvsimple, booktabs, siunitx}
 % Custom configurations and commands
 \input{PreAmble/PreAmble.tex}
 \begin{document}
@@ -47,6 +49,9 @@
         \listoffigures
     \endgroup
     \input{Chapters/C1/C1.tex}
+    \input{Chapters/C2/C2.tex}
+    \input{Chapters/C3/C3.tex}
+    \input{Chapters/C4/C4.tex}
     \printbibheading[title=References, heading=bibintoc]{}
     \printbibliography[nottype=online,heading=subbibliography,title={Books and Academic Sources}]
     \printbibliography[type=online,heading=subbibliography,title={Online Articles}]

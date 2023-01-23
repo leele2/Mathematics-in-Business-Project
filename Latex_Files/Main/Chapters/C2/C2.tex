@@ -1,2 +1,80 @@
 % !TeX root = ..\..\main.tex
-\chapter{Here is the second Chapter}
+\chapter{Method}
+
+In this chapter we will discuss how we can computationally implement the Costabile pricing model with the use of \textsc{Matlab}, we will also briefly outline how we implement a Monte-Carlo model. We will then compare the results of our implementation focusing on the accuracy and efficiency.
+
+\section{Costabile method}
+
+As mentioned in the previous chapter, the Costabile method relies on a subset of representative averages which are actually a subset of real averages realized at each node. Costabile et al.~propose an algorithm to calculate the list of representative averages at each node. Whilst there is an explicit formula for the first and last averages, namely \(A_\text{max}\p{i,\,j}\) and \(A_\text{min}\p{i,\,j}\) respectively. The averages in between rely on a recursive method which first involves considering the path taken to reach node, finding the highest asset value reached that is not on the minimum path, \(\tmin{i}{j}\). After saving this value, the corresponding node to that value is multiplied by \(d^2\), in which we find the next highest value not on the \(\tmin{i}{j}\). This is repeated until the path being considered becomes \(\tmin{i}{j}\), at which point you with have a set of \(\smax{i}{j}{k}\) values which can be used to produce the list of representative averages.
+
+\subsection{Finding \(\smax{i}{j}{k}\) values}
+
+Whilst the aforementioned method produces a set of representative averages without needing any additional parameters unlike the binomial methods which predate it; it becomes very computationally expensive for large binomial trees. Consider that for every representative average you need to first produce a corresponding path to reach \(A_\text{max}\p{i,\,j}\), search along said path to find the \(\smax{i}{j}{k}\) value, replace the value and then search along the path again, then repeat \(j(i-j)\) times for each node.
+
+\subsubsection{Alternative approach}
+
+Whilst we can of course programme a path search and replace algorithm as shown in \autoref{ApML:BinoAsianPath} lines: 48--75; however, here we propose an alternative. If we were to look at the lists of \(\smax{i}{j}{k}\) produced by the search and replace method, it is clear to see that a pattern emerges. We begin by stating that for any node \((i,\,j)\) such that \(i = j\) or \(j = 0\), then there will only be one \(\smax{i}{j}{1} = S_0u^j d^{i-j}\). 
+\nline{}
+For all other nodes we have \(k \in [1, j\p{i-j}]\). Intuitively, we know our first \(\smax{i}{j}{1} = S_0^j\), it follows that our next value would then be \(\smax{i}{j}{2} = S_0^{j-1}\). Upon investigating, if we set parameter \(z = \min\p{j, i - j}\) then it turns out our \(\smax{i}{j}{k}\) values descend from \(\smax{i}{j}{1} = S_0^j\) in repeated chunks which increase in length by one; until the repeated chunk length is equal to \(z\). Then repeated chunks of length \(z\) are repeated ensuring enough space at the end of list to reduce the length back to one. 
+\nline{}
+Take for example node \(\p{7,4}\), here \(z = 3\) meaning we start at \(S_0^j\), then the next two values are \(S_0^{j-1}\) and the three after that are \(S_0^{j-2}\). Since our repeated chunk length is now equal to \(z\) we continue decreasing our value, but our chunk stays off length \(z\). The list continues in this fashion ensuring enough room at the end of the list to decrease the chunk length to equal one. \autoref{smax vals} shows all \(\smax{7}{4}{k}\) values:
+
+\begin{table}
+    \centering
+    \begin{tabular}{cc}
+        \multicolumn{2}{c}{\(\smax{7}{4}{k}\)} \\
+        \midrule
+        k = 1 & \(S_0u^{7} \) \\
+        k = 2 & \(S_0u^{6} \) \\
+        k = 3 & \(S_0u^{6} \) \\
+        k = 4 & \(S_0u^{5} \) \\
+        k = 5 & \(S_0u^{5} \) \\
+        k = 6 & \(S_0u^{5} \) \\
+        k = 7 & \(S_0u^{4} \) \\
+        k = 8 & \(S_0u^{4} \) \\
+        k = 9 & \(S_0u^{4} \) \\
+        k = 10 & \(S_0u^{3} \) \\
+        k = 11 & \(S_0u^{3} \) \\
+        k = 12 & \(S_0u^{2} \) \\
+        \bottomrule
+    \end{tabular}
+    \caption{All \(\smax{7}{4}{k}\) values to be used in the calculation of our representative averages.}\label{smax vals}
+\end{table}
+
+Whilst this may seem quite complicated, it does make sense when you consider how the path moves when following the algorithm proposed by Costabile. It is also quite simple to implement into \textsc{Matlab}, allowing you to calculate all required \(\smax{i}{j}{k}\) values by only considering \(S_0, u, d\) and \(i,\,j\). We proceed as follows (code shown in \autoref{ApML:BinoAsian} lines: 49--77):
+\nline{}
+We begin by calculating the size that our vector will be, \(n = j\p{i-j}\). If \(n = 1\) we simply set the one \(\smax{i}{j}{1}\) value and proceed to the next node. We then calculate our parameter mentioned earlier \(z = \min\p{j,\,i-j}\). We can now determine the number of unique values \({\eta}\), that occur in our \(\smax{i}{j}{k}\) vector with the following formula:
+
+\begin{equation*}
+    {\eta} = \frac{n}{z} + z - 1
+\end{equation*}
+
+Now, with \(\eta \) we can calculate the first and last \(\smax{i}{j}{k}\) values
+
+\begin{align*}
+    \smax{i}{j}{1} = S_0u^j && \smax{i}{j}{j(i-j)} = S_0u^{j-\eta + 1}
+\end{align*}
+
+We then fill our vector from both the top and bottom, doing so in one for loop that fills in chunks that increase in length and decrease (increase) in value from the top (bottom); until current chunk length is equal to \(z - 1\). We then use another for loop which fills in the middle chunks of length \(z\) again decreasing value after every iteration. After which, we have successfully filled our \(\smax{i}{j}{k}\) vector for node \(\p{i,\,j}\), this is then repeated for all nodes; allowing us to calculate the representative averages using the formulae shown in the Costabile paper. 
+
+\subsubsection{Useful mentions on the Costabile method}
+
+It is certainly worth noting that the list of representative averages are sorted from highest to lowest. Keeping this in mind allows us to implement a basic but very fast binary search algorithm; when searching for \(k_u\) and \(k_d\) in our list of representative averages. This proves to be much faster than the find function included in \textsc{Matlab}, our implementation of the binary search is shown in \autoref{ApML:FindSorted}. It also stands that you can see some marginal gains from implementing your own interpolation function, in our implementation we opted for a simple linear interpolation which is shown to be sufficient, especially for small \(\delta t\).
+
+\section{Monte-Carlo method}
+
+As mentioned previously, to extend the Monte-Carlo method to the price Asian option we must instead consider our asset module over \(N \delta t\) time steps. This is so we can realize a simulated path the asset value took from \(t = 0\) to \(t = N\delta t = T\). We then repeat this many times allowing us to utilize the law of large numbers and approximate the expectation of \(\poff{S(T)}\).
+\nline{}
+We do this programmatically in \textsc{Matlab} as follows: We first simulate \(M \times N\) realizations of \(Z \sim \norm\p{0,\,1}\). Then using a for loop which iterates forward in time by \(\delta t\) per iteration which calculates the next value off the path using \autoref{eqn:c1:geobrown model} for a vector of length \(M \):
+
+\begin{equation*}
+    \vec{S}_{n+1} = \vec{S}_n\exp\p{\p{\mu-\frac{1}{2}\sigma^2}\p{\delta t} + \sigma\sqrt{\delta t}\vec{Z_i}}, \quad \text{With i.i.d.~} \vec{Z_i} \sim \norm\p{0,1}
+\end{equation*}
+
+Upon the for loop finishing, we are left with a matrix of dimensions \(\p{M \times N}\) in which every row contains a realized path for our asset value. All that is left is for us to take the expectation across every row, giving us \(M \) path averages \(A_i \). Then using our strike price we can calculate the pay-off function for each realized path using \(\poff{E, A_i}\). Finally, we use the law of large numbers and take the expectation giving us an approximation for \(\E{\poff{E, A_i}}\), thus our option value is this value times the discounted factor \(e^{-rT}\). Our implementation can be seen in \autoref{ApML:MC}.
+\nline{}
+We summarize as follows:
+
+\begin{equation*}
+    \pof_0 = e^{-rT}\frac{1}{M}\sum_{i=1}^M\poff{E, A_i}
+\end{equation*}

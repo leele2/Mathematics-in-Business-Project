@@ -26,3 +26,10 @@ SubPlots
     \end{subfigure}
 \caption{}
 \end{figure}
+\begin{table}[H]
+    \begin{center}
+        \csvautotabular{.csv}
+    \end{center}
+    \caption{}
+    \label{}
+\end{table}

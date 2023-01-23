@@ -1,0 +1,21 @@
+addpath('Functions')  
+clear; tic; S0=50;  E=40; T=1; r=0.1; sigma=0.3; N=50; F=@(E,A)max(A-E,0);
+F1 = @(E,A) max(mean(A,2)-E,0); M = 1e5;
+Ns = [10:5:20];
+BAs = zeros(1,numel(Ns));
+BAsP = BAs;
+MntC = BAs;
+for i = 1:numel(Ns)
+    N = Ns(i);
+    BAs(i)  = BinoAsian(S0,E,T,r,sigma,N,F);
+    BAsP(i) = BinoAsianPath(S0,E,T,r,sigma,N,F);
+    MntC(i) = MC(S0,E,T,r,sigma,N,F1,M);
+end
+[11.5276,11.5348,11.5384,11.5413,11]
+vars = {'Alternative Costabile', 'Path Search Costabile', 'Monte-Carlo', 'Published Values'};
+rows = cell(1,numel(Ns));
+for i = 1:numel(Ns)
+    rows{i} = join(['n = ', int2str(Ns(i))]);
+end
+
+array2table([BAs',BAsP',MntC'],RowNames = rows,VariableNames = vars)

@@ -1,0 +1,22 @@
+addpath('Functions')  
+clear; tic; S0=50;  E=40; T=1; r=0.1; sigma=0.3; N=50; F=@(E,A)max(A-E,0);
+Ns = 10:10:50;
+Es  = 40:5:60;
+BAs = zeros(1,numel(Ns));
+BAsP = BAs;
+for j = 1:numel(Es)
+    for i = 1:numel(Ns)
+        N = Ns(i);
+        E  = Es(j);
+        BAs(i,j)  = BinoAsian(S0,E,T,r,sigma,N,F);
+        BAsP(i,j) = BinoAsianPath(S0,E,T,r,sigma,N,F);
+    end
+end
+vars = cell(1,numel(Ns));
+rows = cell(1,numel(Ns));
+for i = 1:numel(Ns)
+    rows{i} = join(['N = ', int2str(Ns(i))]);
+    vars{i} = join(['E = ', int2str(Es(i))]);
+end
+table = array2table(round(BAs - BAsP,7),VariableNames = vars,RowNames=rows);
+writetable(table,"C:\Users\dj-lu\OneDrive - University of Exeter\University of Exeter\05 - Fifth Year\Mathematics in Business Project\Latex_Files\Main\table1.csv",'WriteRowNames',true)
